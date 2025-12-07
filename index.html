@@ -1,13 +1,14 @@
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Zero to Infinity | The Complete Black Hole Guide</title>
+    <title>Zero to Infinity | The Complete Black Hole Guide (Expanded Edition)</title>
     
-    <!-- Fonts: Inter for Body, Cinzel for Headers -->
+    <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700;800&family=Inter:wght@200;300;400;500;600;700&family=JetBrains+Mono:wght@300;400&display=swap" rel="stylesheet">
     
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
@@ -22,15 +23,17 @@
                     fontFamily: {
                         sans: ['Inter', 'sans-serif'],
                         serif: ['Cinzel', 'serif'],
-                        cinzel: ['Cinzel', 'serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
                     },
                     colors: {
                         zinc: {
                             850: '#1f1f22',
+                            900: '#18181b',
+                            950: '#09090b',
                         }
                     },
                     backgroundImage: {
-                        'noise': "url('data:image/svg+xml,%3Csvg viewBox=\"0 0 200 200\" xmlns=\"http://www.w3.org/2000/svg\"%3E%3Cfilter id=\"noiseFilter\"%3E%3CfeTurbulence type=\"fractalNoise\" baseFrequency=\"0.65\" numOctaves=\"3\" stitchTiles=\"stitch\"/%3E%3C/filter%3E%3Crect width=\"100%25\" height=\"100%25\" filter=\"url(%23noiseFilter)\" opacity=\"0.05\"/%3E%3C/svg%3E')",
+                        'noise': "url('data:image/svg+xml,%3Csvg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"%3E%3Cfilter id="noiseFilter"%3E%3CfeTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch"/%3E%3C/filter%3E%3Crect width="100%25" height="100%25" filter="url(%23noiseFilter)" opacity="0.05"/%3E%3C/svg%3E')",
                     }
                 }
             }
@@ -40,6 +43,9 @@
     <style>
         :root {
             --bg-deep: #050505;
+            --accent-silver: #d4d4d8;
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --glass-bg: rgba(255, 255, 255, 0.02);
         }
 
         * { box-sizing: border-box; }
@@ -49,728 +55,566 @@
             color: #fff; 
             overflow-x: hidden; 
             font-family: 'Inter', sans-serif;
+            scroll-behavior: smooth;
         }
 
-        h1, h2, h3, h4, .font-cinzel {
+        h1, h2, h3, h4, h5, h6, .font-cinzel {
             font-family: 'Cinzel', serif;
         }
 
-        ::-webkit-scrollbar { width: 4px; }
-        ::-webkit-scrollbar-track { background: #0a0a0a; }
-        ::-webkit-scrollbar-thumb { background: #333; border-radius: 2px; }
+        .font-mono {
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: #050505; }
+        ::-webkit-scrollbar-thumb { background: #333; border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: #555; }
         
         /* Star Field */
         .star-field {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 0;
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none; z-index: 0;
         }
-        
         .star {
-            position: absolute;
-            background: white;
-            border-radius: 50%;
+            position: absolute; background: white; border-radius: 50%;
             animation: twinkle 3s ease-in-out infinite;
         }
+        @keyframes twinkle { 0%, 100% { opacity: 0.3; } 50% { opacity: 1; } }
         
-        @keyframes twinkle {
-            0%, 100% { opacity: 0.3; }
-            50% { opacity: 1; }
-        }
-        
-        /* --- SILVER GRADIENT TEXT (Strict UI Monochrome) --- */
+        /* Typography Utilities */
         .text-silver-gradient {
-            background: linear-gradient(to right, #ffffff, #d4d4d8, #71717a);
+            background: linear-gradient(to right, #ffffff, #e4e4e7, #a1a1aa);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
         }
 
-        /* --- GLASS CARD (Strict UI Monochrome) --- */
+        .text-justify-academic {
+            text-align: justify;
+            text-justify: inter-word;
+        }
+
+        /* Glass Card Enhanced */
         .glass-card {
-            background: rgba(255, 255, 255, 0.03); 
+            background: var(--glass-bg);
             backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
+            border: 1px solid var(--glass-border);
             position: relative;
             overflow: hidden; 
-            transition: transform 0.5s cubic-bezier(0.19, 1, 0.22, 1);
-            --mouse-x: 50%;
-            --mouse-y: 50%;
-            --spotlight-size: 600px;
+            transition: all 0.4s cubic-bezier(0.19, 1, 0.22, 1);
+            --mouse-x: 50%; --mouse-y: 50%; --spotlight-size: 500px;
         }
-
         .glass-card:hover {
-            transform: translate3d(0, -4px, 0);
             border-color: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+            box-shadow: 0 20px 40px -10px rgba(0,0,0,0.5);
         }
 
-        /* 1. BORDER BEAM ANIMATION (Silver/White) */
-        @property --angle {
-            syntax: '<angle>';
-            initial-value: 0deg;
-            inherits: false;
-        }
-
-        .glass-card::after {
-            content: '';
-            position: absolute;
-            inset: 0;
-            z-index: 2;
-            padding: 1px;
-            border-radius: inherit;
-            background: conic-gradient(from var(--angle), transparent 20%, rgba(255, 255, 255, 0.8), transparent 60%);
-            -webkit-mask: 
-                linear-gradient(#fff 0 0) content-box, 
-                linear-gradient(#fff 0 0);
-            mask: 
-                linear-gradient(#fff 0 0) content-box, 
-                linear-gradient(#fff 0 0);
-            -webkit-mask-composite: xor;
-            mask-composite: exclude;
-            pointer-events: none;
-            animation: beam 4s linear infinite;
-            opacity: 0;
-            transition: opacity 0.5s ease;
-        }
-
-        .glass-card:hover::after {
-            opacity: 1;
-        }
-
-        @keyframes beam {
-            from { --angle: 0deg; }
-            to { --angle: 360deg; }
-        }
-
-        /* 2. SPOTLIGHT (White) */
+        /* Spotlight Effect */
         .glass-card::before {
-            content: "";
-            position: absolute;
-            inset: 0;
-            z-index: 1;
-            background: 
-                radial-gradient(
-                    var(--spotlight-size) circle at var(--mouse-x) var(--mouse-y), 
-                    rgba(255, 255, 255, 0.08),
-                    transparent 40%
-                ),
-                url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E");
-            opacity: 0;
-            transition: opacity 0.5s;
-            pointer-events: none;
-            mix-blend-mode: overlay;
+            content: ""; position: absolute; inset: 0; z-index: 1;
+            background: radial-gradient(var(--spotlight-size) circle at var(--mouse-x) var(--mouse-y), rgba(255, 255, 255, 0.06), transparent 40%);
+            opacity: 0; transition: opacity 0.5s; pointer-events: none; mix-blend-mode: overlay;
         }
+        .glass-card:hover::before { opacity: 1; }
+        .glass-card > * { position: relative; z-index: 2; }
 
-        .glass-card:hover::before {
-            opacity: 1;
-        }
-        
-        .glass-card > * {
-            position: relative;
-            z-index: 3;
-        }
-
+        /* Equation Box */
         .equation-box {
             font-family: 'Times New Roman', serif;
-            background: rgba(255, 255, 255, 0.02);
+            background: rgba(0, 0, 0, 0.4);
             border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        
-        .timeline-line {
-            background: linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.3) 10%, rgba(255, 255, 255, 0.3) 90%, rgba(255, 255, 255, 0) 100%);
-        }
-        
-        .nav-blur {
-            backdrop-filter: blur(20px);
-            background: rgba(5, 5, 5, 0.7);
-        }
-        
-        /* 3. INFINITE MARQUEE */
-        .marquee-container {
-            width: 100%;
-            overflow: hidden;
-            background: #050505;
             position: relative;
-            z-index: 20;
-            border-top: 1px solid rgba(255,255,255,0.05);
-            border-bottom: 1px solid rgba(255,255,255,0.05);
-            padding: 1.2rem 0;
+        }
+        .equation-box::after {
+            content: "EQ"; position: absolute; top: 0; right: 0;
+            font-size: 0.5rem; padding: 0.2rem 0.4rem;
+            background: rgba(255,255,255,0.1); color: #888;
         }
 
-        .marquee-content {
-            display: flex;
-            width: max-content;
-            animation: scroll 30s linear infinite;
+        /* Horizontal Timeline */
+        .horizontal-timeline-container {
+            width: 100%; overflow-x: auto; padding-bottom: 2rem;
+            mask-image: linear-gradient(to right, transparent, black 5%, black 95%, transparent);
+            -webkit-mask-image: linear-gradient(to right, transparent, black 5%, black 95%, transparent);
+        }
+        .horizontal-timeline {
+            display: flex; gap: 2rem; width: max-content; padding: 0 2rem;
+        }
+        .timeline-card {
+            min-width: 300px; max-width: 300px;
+            flex-shrink: 0;
+            border-top: 1px solid rgba(255,255,255,0.2);
+            padding-top: 1rem; position: relative;
+        }
+        .timeline-card::before {
+            content: ''; position: absolute; top: -3px; left: 0;
+            width: 6px; height: 6px; background: white; border-radius: 50%;
+            box-shadow: 0 0 10px white;
         }
 
-        .marquee-item {
-            font-family: 'Cinzel', serif;
-            font-weight: 500;
-            font-size: 0.75rem;
-            letter-spacing: 0.3em;
-            color: rgba(255,255,255,0.3); /* Grey text */
-            display: flex;
-            align-items: center;
-            gap: 4rem;
-            padding-right: 4rem; 
+        /* Dashboard Grid (Anatomy) */
+        .dashboard-grid {
+            display: grid; grid-template-columns: 1fr; gap: 1.5rem;
         }
-        
-        @keyframes scroll {
-            0% { transform: translate3d(0, 0, 0); }
-            100% { transform: translate3d(-50%, 0, 0); }
+        @media (min-width: 1024px) {
+            .dashboard-grid { grid-template-columns: 350px 1fr 350px; }
+            .sticky-center { position: sticky; top: 6rem; height: calc(100vh - 8rem); }
         }
 
-        /* 4. TEXT REVEAL CLASSES */
-        .reveal-container {
-            overflow: hidden;
-            display: block;
+        /* Deep Dive Accordion */
+        details.deep-dive {
+            background: rgba(0,0,0,0.2);
+            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 0.75rem; overflow: hidden;
+            transition: all 0.3s ease;
         }
-        
-        .reveal-text {
-            display: block;
-            transform: translateY(100%);
-            clip-path: polygon(0 100%, 100% 100%, 100% 100%, 0% 100%);
-            will-change: transform, clip-path;
+        details.deep-dive[open] {
+            background: rgba(255,255,255,0.03);
+            border-color: rgba(255,255,255,0.1);
+        }
+        details.deep-dive summary {
+            padding: 1rem; cursor: pointer; list-style: none;
+            display: flex; align-items: center; justify-content: space-between;
+            font-family: 'Cinzel', serif; font-size: 0.9rem; color: #a1a1aa;
+        }
+        details.deep-dive summary:hover { color: white; }
+        details.deep-dive summary::after {
+            content: '+'; font-size: 1.2rem; font-weight: 300; transition: transform 0.3s;
+        }
+        details.deep-dive[open] summary::after { transform: rotate(45deg); }
+        .deep-dive-content {
+            padding: 1.5rem; border-top: 1px solid rgba(255,255,255,0.05);
+            color: #d4d4d8; line-height: 1.8; font-size: 0.95rem;
         }
 
-        /* RESTORED HERO SHADER COLORS */
-        #hero-shader-bg {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 0;
-            opacity: 0.6; /* Increased opacity back */
-            pointer-events: none;
-            /* grayscale removed to show shader colors */
+        /* Data Viz Bars */
+        .data-bar-container {
+            width: 100%; height: 4px; background: rgba(255,255,255,0.1);
+            border-radius: 2px; margin-top: 0.5rem; overflow: hidden;
         }
-        
-        #hero-shader-bg::after {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(to bottom, rgba(5,5,5,0.2) 0%, rgba(5,5,5,0.8) 70%, rgba(5,5,5,1) 100%);
-        }
-        
-        /* 3D Black Hole Canvas */
-        #blackhole-canvas {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            cursor: grab;
-        }
-        
-        #blackhole-canvas:active {
-            cursor: grabbing;
-        }
-        
-        .blackhole-container {
+        .data-bar-fill {
+            height: 100%; background: white; border-radius: 2px;
             position: relative;
-            width: 100%;
-            height: 500px;
-            /* Restored warm gradient backing */
-            background: radial-gradient(ellipse at center, rgba(30, 15, 5, 0.4) 0%, transparent 70%);
-            border-radius: 1rem;
-            overflow: hidden;
+        }
+        .data-bar-fill::after {
+            content: ''; position: absolute; top:0; right:0; bottom:0; width: 10px;
+            background: linear-gradient(to right, transparent, white);
+            filter: blur(2px);
         }
 
-        /* RESTORED PARALLAX COLORS */
-        .section-bg-container {
-            position: absolute;
-            inset: 0;
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
-            z-index: 0;
-            pointer-events: none;
-        }
+        /* Nav Blur */
+        .nav-blur { backdrop-filter: blur(12px); background: rgba(5, 5, 5, 0.6); }
 
-        .section-bg {
-            position: absolute;
-            top: -20%; 
-            left: 0;
-            width: 100%;
-            height: 140%; 
-            object-fit: cover;
-            opacity: 0.35; /* Visible background */
-            will-change: transform;
-            /* Grayscale removed */
-            mix-blend-mode: screen; 
-        }
+        /* 3D Canvas */
+        #blackhole-canvas { width: 100%; height: 100%; }
 
-        .watermark-number {
-            font-family: 'Cinzel', serif;
-            position: absolute;
-            right: -10px;
-            bottom: -30px;
-            font-size: 8rem;
-            line-height: 1;
-            color: white;
-            opacity: 0.03;
-            pointer-events: none;
-            z-index: 0;
-            transition: opacity 0.5s ease, transform 0.5s ease, color 0.5s ease;
-        }
+        /* Animation Classes */
+        .reveal-text { clip-path: polygon(0 100%, 100% 100%, 100% 100%, 0% 100%); transform: translateY(100%); }
 
-        .glass-card:hover .watermark-number {
-            opacity: 0.08;
-            transform: scale(1.05);
-            color: #d4d4d8; /* Zinc-300 */
+        /* Custom Grids */
+        .key-figures-grid {
+            display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.75rem;
         }
+        @media (min-width: 640px) { .key-figures-grid { grid-template-columns: repeat(4, 1fr); } }
 
+        /* Watermarks */
+        .watermark-huge {
+            position: absolute; font-size: 20vw; font-family: 'Cinzel', serif;
+            color: rgba(255,255,255,0.01); z-index: 0; pointer-events: none;
+            line-height: 1; white-space: nowrap;
+        }
     </style>
 </head>
-<body class="antialiased">
-    <!-- Star Field Background -->
+<body class="antialiased selection:bg-white/20 selection:text-white">
+
+    <!-- Star Field -->
     <div class="star-field" id="starField"></div>
     
     <!-- Navigation -->
-    <nav class="fixed top-0 left-0 w-full z-50 nav-blur border-b border-white/5">
-        <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
-            <div class="flex items-center gap-3">
-                <div class="w-8 h-8 rounded-full bg-gradient-to-br from-white to-zinc-500 flex items-center justify-center shadow-lg shadow-white/10">
-                    <div class="w-3 h-3 bg-black rounded-full"></div>
+    <nav class="fixed top-0 left-0 w-full z-50 nav-blur border-b border-white/5 transition-all duration-300" id="navbar">
+        <div class="max-w-[1400px] mx-auto px-6 h-20 flex items-center justify-between">
+            <a href="#" class="flex items-center gap-3 group">
+                <div class="w-8 h-8 rounded-full bg-gradient-to-br from-white to-zinc-600 flex items-center justify-center shadow-[0_0_15px_rgba(255,255,255,0.3)] group-hover:scale-110 transition-transform">
+                    <div class="w-2 h-2 bg-black rounded-full"></div>
                 </div>
-                <span class="text-xl font-cinzel font-semibold tracking-tight text-white">Zero to Infinity</span>
+                <div class="flex flex-col">
+                    <span class="text-lg font-cinzel font-bold tracking-tight text-white leading-none">ZERO TO INFINITY</span>
+                    <span class="text-[0.6rem] font-mono text-zinc-500 tracking-widest uppercase">Expanded Edition</span>
+                </div>
+            </a>
+            
+            <div class="hidden xl:flex items-center gap-8 text-xs font-medium tracking-widest uppercase text-zinc-500">
+                <a href="#history" class="hover:text-white transition-colors relative group">History<span class="absolute -bottom-1 left-0 w-0 h-px bg-white transition-all group-hover:w-full"></span></a>
+                <a href="#anatomy" class="hover:text-white transition-colors relative group">Anatomy<span class="absolute -bottom-1 left-0 w-0 h-px bg-white transition-all group-hover:w-full"></span></a>
+                <a href="#deep-dive" class="hover:text-white transition-colors relative group">Deep Dive<span class="absolute -bottom-1 left-0 w-0 h-px bg-white transition-all group-hover:w-full"></span></a>
+                <a href="#formation" class="hover:text-white transition-colors relative group">Formation<span class="absolute -bottom-1 left-0 w-0 h-px bg-white transition-all group-hover:w-full"></span></a>
+                <a href="#thermodynamics" class="hover:text-white transition-colors relative group">Thermodynamics<span class="absolute -bottom-1 left-0 w-0 h-px bg-white transition-all group-hover:w-full"></span></a>
+                <a href="#evidence" class="hover:text-white transition-colors relative group">Evidence<span class="absolute -bottom-1 left-0 w-0 h-px bg-white transition-all group-hover:w-full"></span></a>
+                <a href="#frontier" class="hover:text-white transition-colors relative group">Frontier<span class="absolute -bottom-1 left-0 w-0 h-px bg-white transition-all group-hover:w-full"></span></a>
             </div>
             
-            <div class="hidden md:flex items-center gap-8 text-sm font-light tracking-wide text-zinc-400">
-                <a href="#history" class="hover:text-white transition-colors">History</a>
-                <a href="#anatomy" class="hover:text-white transition-colors">Anatomy</a>
-                <a href="#physics" class="hover:text-white transition-colors">Physics</a>
-                <a href="#formation" class="hover:text-white transition-colors">Formation</a>
-                <a href="#thermodynamics" class="hover:text-white transition-colors">Thermodynamics</a>
-                <a href="#evidence" class="hover:text-white transition-colors">Evidence</a>
-                <a href="#frontier" class="hover:text-white transition-colors">Frontier</a>
-            </div>
-            
-            <button class="md:hidden text-white">
-                <i data-lucide="menu" class="w-5 h-5" style="stroke-width: 1.5"></i>
+            <button class="xl:hidden text-white p-2">
+                <i data-lucide="menu" class="w-6 h-6"></i>
             </button>
         </div>
     </nav>
 
     <!-- Hero Section -->
     <section class="relative min-h-screen flex items-center justify-center overflow-hidden">
-        <!-- Unicorn Studio Shader Background -->
-        <div id="hero-shader-bg">
-            <div data-us-project="2OQSrYIf0cItcyUtviyl" style="width:100%; height: 100%;"></div>
+        <!-- Background Shader/Image -->
+        <div class="absolute inset-0 z-0">
+             <div class="absolute inset-0 bg-gradient-to-b from-transparent via-[#050505]/50 to-[#050505] z-10"></div>
+             <!-- Pollinations BG for Hero -->
+             <img src="https://image.pollinations.ai/prompt/black%20hole%20singularity%20event%20horizon%20cinematic%208k%20dark%20void%20interstellar%20photorealistic?width=1920&height=1080&nologo=true"
+                  class="w-full h-full object-cover opacity-60 scale-110 animate-pulse-slow" alt="Hero Background">
         </div>
         
-        <div class="absolute inset-0 flex flex-col items-center justify-center text-center z-10 px-6 pt-20">
-            <div class="reveal-container mb-8">
-                <div class="reveal-text inline-flex items-center gap-2 px-4 py-2 rounded-full border border-white/20 bg-white/5 backdrop-blur-sm">
-                    <i data-lucide="sparkles" class="w-4 h-4 text-white" style="stroke-width: 1.5"></i>
-                    <span class="text-xs font-semibold text-zinc-200 tracking-[0.2em] uppercase font-sans">The Complete Educational Guide</span>
+        <div class="absolute inset-0 flex flex-col items-center justify-center text-center z-20 px-6 pt-20">
+            <div class="reveal-container mb-6">
+                <div class="reveal-text inline-flex items-center gap-3 px-6 py-2 rounded-full border border-white/10 bg-white/5 backdrop-blur-md">
+                    <div class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div>
+                    <span class="text-xs font-bold text-zinc-300 tracking-[0.3em] uppercase font-mono">System Online: v2.0 Expanded</span>
                 </div>
             </div>
             
-            <h1 class="text-6xl md:text-9xl font-semibold tracking-tighter leading-none mb-8">
-                <div class="reveal-container">
-                    <span class="reveal-text block bg-gradient-to-b from-white to-zinc-600 bg-clip-text text-transparent">ZERO</span>
-                </div>
-                <div class="reveal-container my-2">
-                    <span class="reveal-text text-2xl md:text-3xl text-zinc-600 block font-light tracking-[1em] font-sans">TO</span>
-                </div>
-                <div class="reveal-container">
-                    <span class="reveal-text block text-silver-gradient drop-shadow-2xl">INFINITY</span>
-                </div>
+            <h1 class="text-7xl md:text-[10rem] font-bold tracking-tighter leading-[0.85] mb-8 mix-blend-overlay">
+                <div class="reveal-container"><span class="reveal-text block text-white">ZERO</span></div>
+                <div class="reveal-container"><span class="reveal-text block text-zinc-600 text-4xl md:text-6xl my-4 font-light tracking-[0.5em] font-sans">TO</span></div>
+                <div class="reveal-container"><span class="reveal-text block text-silver-gradient">INFINITY</span></div>
             </h1>
             
             <div class="reveal-container mb-12">
-                <p class="reveal-text text-lg md:text-xl text-zinc-400 max-w-2xl font-light leading-relaxed mx-auto">
-                    A comprehensive treatise on black hole physics. From Newtonian dark stars to quantum gravity paradoxes—everything a physics student needs to understand the universe's most extreme objects.
+                <p class="reveal-text text-lg md:text-xl text-zinc-400 max-w-3xl font-light leading-relaxed mx-auto">
+                    The ultimate comprehensive treatise on black hole physics. <br class="hidden md:block"/>
+                    From Newtonian dark stars to the holographic principle and quantum gravity.
                 </p>
             </div>
             
             <div class="flex flex-col sm:flex-row items-center gap-6 opacity-0" id="hero-buttons">
-                <a href="#modules" class="group flex items-center gap-3 bg-white text-black px-8 py-4 rounded-full font-medium hover:bg-zinc-200 transition-all shadow-[0_0_20px_-5px_rgba(255,255,255,0.3)]">
-                    Begin Learning
-                    <i data-lucide="arrow-down" class="w-4 h-4 transition-transform group-hover:translate-y-1" style="stroke-width: 1.5"></i>
-                </a>
-                <a href="#history" class="flex items-center gap-2 text-zinc-400 hover:text-white transition-colors">
-                    <i data-lucide="play-circle" class="w-5 h-5" style="stroke-width: 1.5"></i>
-                    <span>Watch Introduction</span>
+                <a href="#history" class="group flex items-center gap-3 bg-white text-black px-10 py-5 rounded-full font-bold tracking-wide hover:bg-zinc-200 transition-all shadow-[0_0_30px_-5px_rgba(255,255,255,0.4)]">
+                    INITIATE SEQUENCE
+                    <i data-lucide="arrow-right" class="w-4 h-4 transition-transform group-hover:translate-x-1"></i>
                 </a>
             </div>
-        </div>
-        
-        <div class="absolute bottom-10 left-1/2 -translate-x-1/2 flex items-center gap-4 text-xs text-zinc-600 font-mono z-10">
-            <span class="tracking-widest">SCROLL TO EXPLORE</span>
-            <div class="h-px w-16 bg-zinc-800"></div>
         </div>
     </section>
 
     <!-- Infinite Marquee -->
-    <div class="marquee-container">
-        <div class="marquee-content">
-            <!-- Two identical sets for seamless loop -->
-            <div class="marquee-item">
-                <span>EVENT HORIZON</span>•
-                <span>SINGULARITY</span>•
-                <span>ERGOSPHERE</span>•
-                <span>SPAGHETTIFICATION</span>•
-                <span>RELATIVITY</span>•
-                <span>TIME DILATION</span>•
-                <span>HAWKING RADIATION</span>•
-                <span>GRAVITATIONAL WAVES</span>•
-                <span>INFORMATION PARADOX</span>•
-                <span>ACCRETION DISK</span>•
+    <div class="w-full overflow-hidden bg-[#050505] border-y border-white/5 py-4 relative z-20">
+        <div class="flex w-max animate-[scroll_40s_linear_infinite]">
+            <div class="flex gap-12 px-6">
+                <span class="text-xs font-cinzel tracking-[0.3em] text-zinc-600">EVENT HORIZON</span>
+                <span class="text-xs font-cinzel tracking-[0.3em] text-zinc-600">SINGULARITY</span>
+                <span class="text-xs font-cinzel tracking-[0.3em] text-zinc-600">ERGOSPHERE</span>
+                <span class="text-xs font-cinzel tracking-[0.3em] text-zinc-600">SPAGHETTIFICATION</span>
+                <span class="text-xs font-cinzel tracking-[0.3em] text-zinc-600">SCHWARZSCHILD METRIC</span>
+                <span class="text-xs font-cinzel tracking-[0.3em] text-zinc-600">HAWKING RADIATION</span>
+                <span class="text-xs font-cinzel tracking-[0.3em] text-zinc-600">INFORMATION PARADOX</span>
+                <span class="text-xs font-cinzel tracking-[0.3em] text-zinc-600">GRAVITATIONAL WAVES</span>
             </div>
-            <div class="marquee-item">
-                <span>EVENT HORIZON</span>•
-                <span>SINGULARITY</span>•
-                <span>ERGOSPHERE</span>•
-                <span>SPAGHETTIFICATION</span>•
-                <span>RELATIVITY</span>•
-                <span>TIME DILATION</span>•
-                <span>HAWKING RADIATION</span>•
-                <span>GRAVITATIONAL WAVES</span>•
-                <span>INFORMATION PARADOX</span>•
-                <span>ACCRETION DISK</span>•
+            <div class="flex gap-12 px-6">
+                <span class="text-xs font-cinzel tracking-[0.3em] text-zinc-600">EVENT HORIZON</span>
+                <span class="text-xs font-cinzel tracking-[0.3em] text-zinc-600">SINGULARITY</span>
+                <span class="text-xs font-cinzel tracking-[0.3em] text-zinc-600">ERGOSPHERE</span>
+                <span class="text-xs font-cinzel tracking-[0.3em] text-zinc-600">SPAGHETTIFICATION</span>
+                <span class="text-xs font-cinzel tracking-[0.3em] text-zinc-600">SCHWARZSCHILD METRIC</span>
+                <span class="text-xs font-cinzel tracking-[0.3em] text-zinc-600">HAWKING RADIATION</span>
+                <span class="text-xs font-cinzel tracking-[0.3em] text-zinc-600">INFORMATION PARADOX</span>
+                <span class="text-xs font-cinzel tracking-[0.3em] text-zinc-600">GRAVITATIONAL WAVES</span>
             </div>
         </div>
     </div>
 
-    <!-- Course Overview (Redesigned Cards) -->
-    <section id="modules" class="py-32 relative z-10">
-        <div class="max-w-7xl mx-auto px-6">
-            <div class="text-center mb-24">
-                <div class="text-xs font-semibold text-zinc-400 tracking-[0.3em] uppercase mb-4">COURSE SYLLABUS</div>
-                <h2 class="text-4xl md:text-6xl font-semibold tracking-tight mb-6 text-white">Seven Modules to Mastery</h2>
-                <p class="text-lg text-zinc-400 max-w-2xl mx-auto font-light">A physics-first approach: we don't shy away from mathematics—we use it to build physical intuition.</p>
-            </div>
-            
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <!-- Module 1 -->
-                <a href="#history" class="module-card glass-card rounded-xl p-8 cursor-pointer group flex flex-col justify-between min-h-[300px]">
-                    <div class="watermark-number">01</div>
-                    <div class="relative z-10">
-                        <div class="h-px w-12 bg-zinc-600 mb-6 group-hover:w-20 transition-all duration-500"></div>
-                        <h3 class="text-2xl font-medium mb-4 text-white group-hover:text-silver-gradient transition-colors">Historical Foundation</h3>
-                        <p class="text-sm text-zinc-400 leading-relaxed mb-6 font-light">From Michell's dark stars to Einstein's spacetime revolution and Schwarzschild's wartime breakthrough.</p>
-                    </div>
-                    <div class="flex flex-wrap gap-2 relative z-10">
-                        <span class="text-xs px-3 py-1 border border-white/10 rounded-full text-zinc-500 group-hover:border-white/30 group-hover:text-white transition-colors">Escape Velocity</span>
-                        <span class="text-xs px-3 py-1 border border-white/10 rounded-full text-zinc-500 group-hover:border-white/30 group-hover:text-white transition-colors">GR Basics</span>
-                    </div>
-                </a>
-                
-                <!-- Module 2 -->
-                <a href="#anatomy" class="module-card glass-card rounded-xl p-8 cursor-pointer group flex flex-col justify-between min-h-[300px]">
-                    <div class="watermark-number">02</div>
-                    <div class="relative z-10">
-                        <div class="h-px w-12 bg-zinc-600 mb-6 group-hover:w-20 transition-all duration-500"></div>
-                        <h3 class="text-2xl font-medium mb-4 text-white group-hover:text-silver-gradient transition-colors">Black Hole Anatomy</h3>
-                        <p class="text-sm text-zinc-400 leading-relaxed mb-6 font-light">Singularity, event horizon, photon sphere, ergosphere—dissecting spacetime's most extreme structure.</p>
-                    </div>
-                    <div class="flex flex-wrap gap-2 relative z-10">
-                        <span class="text-xs px-3 py-1 border border-white/10 rounded-full text-zinc-500 group-hover:border-white/30 group-hover:text-white transition-colors">No-Hair Theorem</span>
-                        <span class="text-xs px-3 py-1 border border-white/10 rounded-full text-zinc-500 group-hover:border-white/30 group-hover:text-white transition-colors">Kerr Solution</span>
-                    </div>
-                </a>
-                
-                <!-- Module 3 -->
-                <a href="#physics" class="module-card glass-card rounded-xl p-8 cursor-pointer group flex flex-col justify-between min-h-[300px]">
-                    <div class="watermark-number">03</div>
-                    <div class="relative z-10">
-                        <div class="h-px w-12 bg-zinc-600 mb-6 group-hover:w-20 transition-all duration-500"></div>
-                        <h3 class="text-2xl font-medium mb-4 text-white group-hover:text-silver-gradient transition-colors">Physics &amp; Math</h3>
-                        <p class="text-sm text-zinc-400 leading-relaxed mb-6 font-light">The Schwarzschild metric decoded. Light cones, geodesics, time dilation, and spaghettification.</p>
-                    </div>
-                    <div class="flex flex-wrap gap-2 relative z-10">
-                        <span class="text-xs px-3 py-1 border border-white/10 rounded-full text-zinc-500 group-hover:border-white/30 group-hover:text-white transition-colors">Metric Tensor</span>
-                        <span class="text-xs px-3 py-1 border border-white/10 rounded-full text-zinc-500 group-hover:border-white/30 group-hover:text-white transition-colors">Tidal Forces</span>
-                    </div>
-                </a>
-                
-                <!-- Module 4 -->
-                <a href="#formation" class="module-card glass-card rounded-xl p-8 cursor-pointer group flex flex-col justify-between min-h-[300px]">
-                    <div class="watermark-number">04</div>
-                    <div class="relative z-10">
-                        <div class="h-px w-12 bg-zinc-600 mb-6 group-hover:w-20 transition-all duration-500"></div>
-                        <h3 class="text-2xl font-medium mb-4 text-white group-hover:text-silver-gradient transition-colors">Formation &amp; Evolution</h3>
-                        <p class="text-sm text-zinc-400 leading-relaxed mb-6 font-light">Stellar death, core collapse, the TOV limit, and the cosmic hierarchy from stellar to supermassive.</p>
-                    </div>
-                    <div class="flex flex-wrap gap-2 relative z-10">
-                        <span class="text-xs px-3 py-1 border border-white/10 rounded-full text-zinc-500 group-hover:border-white/30 group-hover:text-white transition-colors">Supernovae</span>
-                        <span class="text-xs px-3 py-1 border border-white/10 rounded-full text-zinc-500 group-hover:border-white/30 group-hover:text-white transition-colors">Mass Classes</span>
-                    </div>
-                </a>
-                
-                <!-- Module 5 -->
-                <a href="#thermodynamics" class="module-card glass-card rounded-xl p-8 cursor-pointer group flex flex-col justify-between min-h-[300px]">
-                    <div class="watermark-number">05</div>
-                    <div class="relative z-10">
-                        <div class="h-px w-12 bg-zinc-600 mb-6 group-hover:w-20 transition-all duration-500"></div>
-                        <h3 class="text-2xl font-medium mb-4 text-white group-hover:text-silver-gradient transition-colors">Thermodynamics</h3>
-                        <p class="text-sm text-zinc-400 leading-relaxed mb-6 font-light">Bekenstein-Hawking entropy, the temperature of darkness, and the holographic universe.</p>
-                    </div>
-                    <div class="flex flex-wrap gap-2 relative z-10">
-                        <span class="text-xs px-3 py-1 border border-white/10 rounded-full text-zinc-500 group-hover:border-white/30 group-hover:text-white transition-colors">Hawking Radiation</span>
-                        <span class="text-xs px-3 py-1 border border-white/10 rounded-full text-zinc-500 group-hover:border-white/30 group-hover:text-white transition-colors">Area Law</span>
-                    </div>
-                </a>
-                
-                <!-- Module 6 -->
-                <a href="#evidence" class="module-card glass-card rounded-xl p-8 cursor-pointer group flex flex-col justify-between min-h-[300px]">
-                    <div class="watermark-number">06</div>
-                    <div class="relative z-10">
-                        <div class="h-px w-12 bg-zinc-600 mb-6 group-hover:w-20 transition-all duration-500"></div>
-                        <h3 class="text-2xl font-medium mb-4 text-white group-hover:text-silver-gradient transition-colors">Observational Evidence</h3>
-                        <p class="text-sm text-zinc-400 leading-relaxed mb-6 font-light">X-ray binaries, gravitational waves, stellar orbits, and the first photograph of a black hole.</p>
-                    </div>
-                    <div class="flex flex-wrap gap-2 relative z-10">
-                        <span class="text-xs px-3 py-1 border border-white/10 rounded-full text-zinc-500 group-hover:border-white/30 group-hover:text-white transition-colors">LIGO</span>
-                        <span class="text-xs px-3 py-1 border border-white/10 rounded-full text-zinc-500 group-hover:border-white/30 group-hover:text-white transition-colors">EHT</span>
-                    </div>
-                </a>
-                
-                <!-- Module 7 - Featured -->
-                <a href="#frontier" class="module-card md:col-span-2 lg:col-span-3 glass-card rounded-xl p-8 cursor-pointer group flex flex-row items-center justify-between min-h-[200px] border-white/10">
-                    <div class="watermark-number text-[12rem] right-0 bottom-[-4rem]">07</div>
-                    <div class="relative z-10 flex-1 pr-12">
-                         <div class="flex items-center gap-4 mb-4">
-                            <div class="h-px w-12 bg-zinc-500 mb-0"></div>
-                            <span class="text-xs text-zinc-400 uppercase tracking-widest font-semibold">Advanced Frontier</span>
-                         </div>
-                        <h3 class="text-3xl font-medium mb-4 text-white group-hover:text-silver-gradient transition-colors">The Frontier of Physics</h3>
-                        <p class="text-sm text-zinc-400 leading-relaxed max-w-2xl font-light">Information paradox, firewalls, islands, white holes, and the quest for quantum gravity. Where general relativity breaks down.</p>
-                    </div>
-                    <div class="hidden md:flex flex-col gap-2 relative z-10">
-                        <span class="text-xs px-4 py-2 bg-white/5 rounded-full text-zinc-300 text-center border border-white/10">Information Paradox</span>
-                        <span class="text-xs px-4 py-2 bg-white/5 rounded-full text-zinc-300 text-center border border-white/10">Wormholes</span>
-                    </div>
-                </a>
-            </div>
-        </div>
-    </section>
-
-    <!-- Module 1: Historical Foundation -->
+    <!-- MODULE 1: HISTORICAL FOUNDATION -->
     <section id="history" class="py-32 relative border-t border-white/5 overflow-hidden">
-        <div class="section-bg-container">
-            <img src="https://hoirqrkdgbmvpwutwuwj.supabase.co/storage/v1/object/public/assets/assets/72d1eaea-abf0-446a-8daa-8599aab0869f_1600w.webp" 
-                 class="section-bg" alt="History Background">
+        <!-- Background -->
+        <div class="absolute inset-0 w-full h-full z-0 opacity-20 pointer-events-none">
+             <img src="https://image.pollinations.ai/prompt/vintage%20astronomy%20diagrams%20parchment%20black%20hole%20history%20cinematic%208k?width=1920&height=1080&nologo=true" class="w-full h-full object-cover mix-blend-screen" alt="History BG">
+             <div class="absolute inset-0 bg-gradient-to-b from-[#050505] via-transparent to-[#050505]"></div>
         </div>
 
-        <div class="max-w-7xl mx-auto px-6 relative z-10">
-            <div class="flex items-center gap-6 mb-20">
-                <span class="text-8xl font-cinzel text-white/5 font-bold absolute -left-6 -top-10 select-none">01</span>
-                <div class="relative">
-                    <div class="text-xs text-zinc-500 uppercase tracking-[0.2em] mb-2 font-semibold">Module One</div>
-                    <h2 class="text-4xl md:text-5xl font-semibold tracking-tight">Historical Foundation</h2>
+        <div class="max-w-[1400px] mx-auto px-6 relative z-10">
+            <!-- Header -->
+            <div class="flex items-end justify-between mb-16 border-b border-white/10 pb-8">
+                <div>
+                    <div class="text-xs font-mono text-zinc-500 mb-4 tracking-widest">MODULE 01</div>
+                    <h2 class="text-5xl md:text-7xl font-semibold tracking-tight text-white mb-2">Historical Foundation</h2>
+                    <p class="text-zinc-400 max-w-xl text-lg font-light">The evolution of an impossible idea: from "Dark Stars" to Physical Reality.</p>
+                </div>
+                <div class="hidden md:block text-right">
+                    <div class="text-6xl font-cinzel text-white/5 font-bold">1783—2019</div>
                 </div>
             </div>
-            
-            <!-- Timeline -->
-            <div class="relative">
-                <div class="absolute left-8 md:left-1/2 top-0 bottom-0 w-px timeline-line"></div>
-                
-                <!-- 1783 - Michell -->
-                <div class="relative flex flex-col md:flex-row items-start gap-8 mb-32">
-                    <div class="md:w-1/2 md:text-right md:pr-16">
-                        <div class="inline-block px-3 py-1 rounded-full bg-white/5 text-zinc-300 text-xs font-mono mb-4 border border-white/10">1783</div>
-                        <h3 class="text-2xl font-medium mb-4 tracking-tight text-white">John Michell's Dark Stars</h3>
-                        <p class="text-zinc-400 leading-relaxed mb-6 font-light">
-                            The Reverend John Michell became the first to propose that gravity could trap light. Using Newton's corpuscular theory—treating light as particles with mass—he calculated the conditions for an object whose escape velocity exceeds light speed.
-                        </p>
-                        
-                        <div class="equation-box rounded-xl p-6 text-center backdrop-blur-md">
-                            <div class="text-lg text-zinc-400 mb-2 font-cinzel">Escape Velocity</div>
-                            <div class="text-3xl text-white font-serif italic mb-2">v<sub>esc</sub> = √(2GM/r)</div>
-                            <div class="text-xs text-zinc-500">If v<sub>esc</sub> ≥ c, light cannot escape</div>
-                        </div>
-                    </div>
-                    
-                    <div class="absolute left-8 md:left-1/2 w-4 h-4 bg-black border-2 border-white rounded-full -translate-x-1/2 mt-2 shadow-[0_0_15px_rgba(255,255,255,0.3)] z-20"></div>
-                    
-                    <div class="md:w-1/2 md:pl-16 pl-16">
-                        <div class="glass-card rounded-xl p-8 border-l-2 border-l-white/30">
-                            <i data-lucide="quote" class="w-8 h-8 text-white/20 mb-4" style="stroke-width: 1.5"></i>
-                            <p class="text-lg text-zinc-300 italic leading-relaxed font-serif">
-                                "All light emitted from such a body would be made to return towards it, by its own proper gravity."
-                            </p>
-                            <div class="mt-4 text-xs text-zinc-500 uppercase tracking-widest">— John Michell, 1784</div>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- 1915 - Einstein -->
-                <div class="relative flex flex-col md:flex-row-reverse items-start gap-8 mb-32">
-                    <div class="md:w-1/2 md:text-left md:pl-16">
-                        <div class="inline-block px-3 py-1 rounded-full bg-white/5 text-zinc-300 text-xs font-mono mb-4 border border-white/10">1915</div>
-                        <h3 class="text-2xl font-medium mb-4 tracking-tight text-white">Einstein's General Relativity</h3>
-                        <p class="text-zinc-400 leading-relaxed mb-6 font-light">
-                            Einstein revolutionized physics by describing gravity not as a force, but as the curvature of spacetime itself. Mass and energy tell space how to curve; curved space tells matter how to move.
-                        </p>
-                        
-                        <div class="equation-box rounded-xl p-6 text-center mb-6 backdrop-blur-md">
-                            <div class="text-lg text-zinc-400 mb-2 font-cinzel">Field Equations</div>
-                            <div class="text-2xl text-white font-serif italic mb-2">G<sub>μν</sub> + Λg<sub>μν</sub> = (8πG/c⁴)T<sub>μν</sub></div>
-                            <div class="text-xs text-zinc-500">Geometry = Energy Content</div>
-                        </div>
-                    </div>
-                    
-                    <div class="absolute left-8 md:left-1/2 w-4 h-4 bg-black border-2 border-white rounded-full -translate-x-1/2 mt-2 shadow-[0_0_15px_rgba(255,255,255,0.3)] z-20"></div>
-                    
-                    <div class="md:w-1/2 md:pr-16 pl-16 md:pl-0">
-                        <div class="glass-card rounded-xl p-6 mb-4">
-                            <div class="text-xs text-zinc-500 uppercase tracking-wider mb-3 font-semibold">Key Insight</div>
-                            <p class="text-zinc-300 leading-relaxed font-light">
-                                "Space-time tells matter how to move; matter tells space-time how to curve."
-                            </p>
-                            <div class="mt-3 text-xs text-zinc-500">— John Wheeler</div>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- 1916 - Schwarzschild -->
-                <div class="relative flex flex-col md:flex-row items-start gap-8">
-                    <div class="md:w-1/2 md:text-right md:pr-16">
-                        <div class="inline-block px-3 py-1 rounded-full bg-white/5 text-zinc-300 text-xs font-mono mb-4 border border-white/10">1916</div>
-                        <h3 class="text-2xl font-medium mb-4 tracking-tight text-white">Schwarzschild's Solution</h3>
-                        <p class="text-zinc-400 leading-relaxed mb-6 font-light">
-                            From the trenches of WWI, Karl Schwarzschild derived the first exact solution to Einstein's equations. He found the spacetime geometry around a spherical mass—revealing the event horizon.
-                        </p>
-                        
-                        <div class="equation-box rounded-xl p-6 text-center backdrop-blur-md">
-                            <div class="text-lg text-zinc-400 mb-2 font-cinzel">Schwarzschild Radius</div>
-                            <div class="text-3xl text-white font-serif italic mb-2">R<sub>s</sub> = 2GM/c²</div>
-                            <div class="text-xs text-zinc-500">The point of no return</div>
-                        </div>
-                    </div>
-                    
-                    <div class="absolute left-8 md:left-1/2 w-4 h-4 bg-black border-2 border-white rounded-full -translate-x-1/2 mt-2 shadow-[0_0_15px_rgba(255,255,255,0.3)] z-20"></div>
-                    
-                    <div class="md:w-1/2 md:pl-16 pl-16">
-                         <div class="glass-card rounded-xl p-8 border-l-2 border-l-white/30">
-                            <i data-lucide="quote" class="w-8 h-8 text-white/20 mb-4" style="stroke-width: 1.5"></i>
-                            <p class="text-sm text-zinc-300 italic leading-relaxed">
-                                "As you see, the war treated me kindly enough... to allow me to get away from it all and take this walk in the land of your ideas."
-                            </p>
-                            <div class="mt-4 text-xs text-zinc-500">— Schwarzschild to Einstein, 1915</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
 
-    <!-- Module 2: Anatomy with Interactive 3D Black Hole -->
-    <section id="anatomy" class="py-32 relative border-t border-white/5 overflow-hidden">
-        <div class="section-bg-container">
-            <img src="https://hoirqrkdgbmvpwutwuwj.supabase.co/storage/v1/object/public/assets/assets/a99ea2b7-ad5e-4188-bc7b-afa6b40c71ac_1600w.jpg" 
-                 class="section-bg" alt="Anatomy Background">
-        </div>
+            <!-- NEW: Horizontal Scroll Timeline -->
+            <div class="mb-32">
+                <h3 class="text-sm font-mono text-zinc-400 mb-6 uppercase tracking-widest flex items-center gap-2">
+                    <i data-lucide="clock" class="w-4 h-4"></i> Chronological Overview
+                </h3>
+                <div class="horizontal-timeline-container">
+                    <div class="horizontal-timeline">
+                        <!-- 1783 -->
+                        <div class="timeline-card group">
+                            <div class="text-3xl font-cinzel text-white mb-2 group-hover:text-silver-gradient transition-colors">1783</div>
+                            <h4 class="text-sm font-bold text-zinc-300 uppercase tracking-wider mb-2">John Michell</h4>
+                            <p class="text-xs text-zinc-500 leading-relaxed">First proposes "dark stars" where escape velocity exceeds the speed of light using Newtonian physics.</p>
+                        </div>
+                        <!-- 1915 -->
+                        <div class="timeline-card group">
+                            <div class="text-3xl font-cinzel text-white mb-2 group-hover:text-silver-gradient transition-colors">1915</div>
+                            <h4 class="text-sm font-bold text-zinc-300 uppercase tracking-wider mb-2">General Relativity</h4>
+                            <p class="text-xs text-zinc-500 leading-relaxed">Einstein publishes the field equations, linking gravity to spacetime curvature.</p>
+                        </div>
+                        <!-- 1916 -->
+                        <div class="timeline-card group">
+                            <div class="text-3xl font-cinzel text-white mb-2 group-hover:text-silver-gradient transition-colors">1916</div>
+                            <h4 class="text-sm font-bold text-zinc-300 uppercase tracking-wider mb-2">Schwarzschild</h4>
+                            <p class="text-xs text-zinc-500 leading-relaxed">First exact solution derived. Discovers the "Magic Circle" (Event Horizon) radius.</p>
+                        </div>
+                         <!-- 1939 -->
+                        <div class="timeline-card group">
+                            <div class="text-3xl font-cinzel text-white mb-2 group-hover:text-silver-gradient transition-colors">1939</div>
+                            <h4 class="text-sm font-bold text-zinc-300 uppercase tracking-wider mb-2">Oppenheimer-Snyder</h4>
+                            <p class="text-xs text-zinc-500 leading-relaxed">Calculates that massive stars can indeed collapse indefinitely into a singularity.</p>
+                        </div>
+                        <!-- 1974 -->
+                        <div class="timeline-card group">
+                            <div class="text-3xl font-cinzel text-white mb-2 group-hover:text-silver-gradient transition-colors">1974</div>
+                            <h4 class="text-sm font-bold text-zinc-300 uppercase tracking-wider mb-2">Hawking Radiation</h4>
+                            <p class="text-xs text-zinc-500 leading-relaxed">Hawking applies quantum field theory, proving black holes emit radiation and evaporate.</p>
+                        </div>
+                        <!-- 2015 -->
+                        <div class="timeline-card group">
+                            <div class="text-3xl font-cinzel text-white mb-2 group-hover:text-silver-gradient transition-colors">2015</div>
+                            <h4 class="text-sm font-bold text-zinc-300 uppercase tracking-wider mb-2">LIGO Detection</h4>
+                            <p class="text-xs text-zinc-500 leading-relaxed">First direct detection of gravitational waves from a binary black hole merger.</p>
+                        </div>
+                        <!-- 2019 -->
+                        <div class="timeline-card group">
+                            <div class="text-3xl font-cinzel text-white mb-2 group-hover:text-silver-gradient transition-colors">2019</div>
+                            <h4 class="text-sm font-bold text-zinc-300 uppercase tracking-wider mb-2">EHT Image</h4>
+                            <p class="text-xs text-zinc-500 leading-relaxed">Humanity captures the first radio image of M87*'s shadow.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-        <div class="max-w-7xl mx-auto px-6 relative z-10">
-             <div class="flex items-center gap-6 mb-20">
-                <span class="text-8xl font-cinzel text-white/5 font-bold absolute -left-6 -top-10 select-none">02</span>
-                <div class="relative">
-                    <div class="text-xs text-zinc-500 uppercase tracking-[0.2em] mb-2 font-semibold">Module Two</div>
-                    <h2 class="text-4xl md:text-5xl font-semibold tracking-tight">Anatomy of a Black Hole</h2>
-                </div>
-            </div>
-            
-            <!-- Interactive 3D Black Hole -->
-            <div class="grid lg:grid-cols-2 gap-12 items-center mb-24">
-                <div class="blackhole-container glass-card shadow-[0_0_50px_-20px_rgba(255,255,255,0.1)]" id="blackhole-wrapper">
-                    <canvas id="blackhole-canvas"></canvas>
-                    <div class="absolute bottom-4 left-4 text-xs text-zinc-500 flex items-center gap-2">
-                        <i data-lucide="mouse-pointer-click" class="w-4 h-4" style="stroke-width: 1.5"></i>
-                        Drag to rotate
-                    </div>
-                    
-                    <!-- Labels overlay -->
-                    <div class="absolute top-4 right-4 text-xs text-white flex items-center gap-2 pointer-events-none font-mono">
-                        <div class="w-2 h-2 rounded-full bg-white animate-pulse"></div>
-                        Accretion Disk
-                    </div>
-                    <div class="absolute top-1/4 left-4 text-xs text-zinc-400 flex items-center gap-2 pointer-events-none font-mono">
-                         <div class="w-2 h-2 rounded-full bg-zinc-400 animate-pulse"></div>
-                        Photon Sphere
-                    </div>
-                </div>
+            <!-- Vertical Deep Dives -->
+            <div class="space-y-32">
                 
-                <div class="space-y-4">
-                    <!-- Singularity -->
-                    <div class="glass-card rounded-xl p-6 group hover:border-white/30 transition-colors">
-                        <div class="flex items-start gap-4">
-                            <div class="w-10 h-10 rounded-lg bg-white/5 flex items-center justify-center shrink-0 border border-white/10">
-                                <i data-lucide="circle-dot" class="w-5 h-5 text-white" style="stroke-width: 1.5"></i>
-                            </div>
-                            <div>
-                                <h4 class="font-medium mb-2 text-white group-hover:text-zinc-300 transition-colors">The Singularity</h4>
-                                <p class="text-sm text-zinc-400 leading-relaxed font-light">
-                                    A point (Schwarzschild) or ring (Kerr) where curvature becomes infinite. This isn't a physical object—it signals where General Relativity breaks down.
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Event Horizon -->
-                    <div class="glass-card rounded-xl p-6 border-l-2 border-l-white group">
-                        <div class="flex items-start gap-4">
-                            <div class="w-10 h-10 rounded-lg bg-white/10 flex items-center justify-center shrink-0 border border-white/20">
-                                <i data-lucide="circle" class="w-5 h-5 text-white" style="stroke-width: 1.5"></i>
-                            </div>
-                            <div>
-                                <h4 class="font-medium mb-2 text-white group-hover:text-zinc-300 transition-colors">The Event Horizon</h4>
-                                <p class="text-sm text-zinc-400 leading-relaxed font-light">
-                                    The defining boundary at r = R<sub>s</sub>. Acts as a one-way membrane: matter and information flow in, nothing flows out.
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Accretion Disk -->
-                    <div class="glass-card rounded-xl p-6 group hover:border-white/30 transition-colors">                       <div class="flex items-start gap-4">
-                            <div class="w-10 h-10 rounded-lg bg-white/5 flex items-center justify-center shrink-0 border border-white/10">
-                                <i data-lucide="disc" class="w-5 h-5 text-white" style="stroke-width: 1.5"></i>
-                            </div>
-                            <div>
-                                <h4 class="font-medium mb-2 text-white group-hover:text-zinc-300 transition-colors">The Accretion Disk</h4>
-                                <p class="text-sm text-zinc-400 leading-relaxed font-light">
-                                    Superheated matter spiraling inward at relativistic speeds. Friction heats gas to millions of degrees, emitting X-rays visible across the cosmos.
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- No-Hair Theorem -->
-            <div class="glass-card rounded-2xl p-8 md:p-12 relative overflow-hidden">
-                <div class="absolute top-0 right-0 p-12 opacity-5 pointer-events-none">
-                     <i data-lucide="scissors" class="w-64 h-64 text-white" style="stroke-width: 0.5"></i>
-                </div>
-                <div class="grid md:grid-cols-2 gap-12 items-center relative z-10">
+                <!-- 1. John Michell -->
+                <div class="grid lg:grid-cols-2 gap-16 items-start">
                     <div>
-                        <div class="text-xs text-zinc-500 uppercase tracking-wider mb-4 font-semibold">Fundamental Theorem</div>
-                        <h3 class="text-3xl font-semibold tracking-tight mb-6">The No-Hair Theorem</h3>
-                        <p class="text-zinc-400 leading-relaxed mb-6 font-light">
-                            Black holes are remarkably simple objects. Despite the complexity of what falls in, a black hole is completely described by just three numbers. All other information is "lost".
+                        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 text-xs font-mono text-zinc-300 mb-6">
+                            <span class="w-2 h-2 rounded-full bg-zinc-500"></span> 1783: The Corpuscular Theory
+                        </div>
+                        <h3 class="text-4xl font-cinzel text-white mb-6">Michell's Dark Stars</h3>
+                        
+                        <!-- Intro -->
+                        <p class="text-zinc-400 text-lg leading-relaxed mb-6 text-justify-academic">
+                            Long before Einstein, the Reverend John Michell conceived of a body so massive that its escape velocity would exceed the speed of light. Writing to the Royal Society in 1783, he used Newton's corpuscular theory of light—which treated photons as having mass—to argue that light emitted from such a star would be dragged back by its own gravity.
                         </p>
+
+                        <!-- Deep Dive Accordion -->
+                        <details class="deep-dive mb-8">
+                            <summary>DEEP DIVE: The Newtonian Calculation</summary>
+                            <div class="deep-dive-content">
+                                <p class="mb-4">
+                                    Michell's calculation was surprisingly accurate despite the incorrect physical premise (light does not have mass in the Newtonian sense). He equated kinetic energy with gravitational potential energy:
+                                </p>
+                                <div class="bg-black/30 p-4 rounded border border-white/10 font-mono text-sm text-center mb-4 text-zinc-300">
+                                    ½mv² = GMm/r  →  v = √(2GM/r)
+                                </div>
+                                <p>
+                                    Setting v = c (speed of light), he found that a star with the same density as the Sun but 500 times the diameter would be invisible. The "corpuscles" of light would shoot up, slow down, stop, and fall back to the surface like a thrown stone. While General Relativity would later discard the idea of light slowing down (c is constant), the radius he calculated is exactly the Schwarzschild radius derived 133 years later.
+                                </p>
+                            </div>
+                        </details>
+
+                        <!-- Data Viz -->
+                        <div class="mb-8">
+                            <div class="flex justify-between text-xs font-mono text-zinc-500 mb-2">
+                                <span>CONCEPTUAL ACCURACY</span>
+                                <span>45%</span>
+                            </div>
+                            <div class="data-bar-container">
+                                <div class="data-bar-fill" style="width: 45%"></div>
+                            </div>
+                        </div>
+
+                        <!-- Key Figures Grid -->
+                        <div class="key-figures-grid">
+                            <div class="glass-card p-4 rounded-lg text-center">
+                                <div class="text-xs text-zinc-500 uppercase tracking-wider mb-1">Peer</div>
+                                <div class="font-bold text-white text-sm">Cavendish</div>
+                            </div>
+                            <div class="glass-card p-4 rounded-lg text-center">
+                                <div class="text-xs text-zinc-500 uppercase tracking-wider mb-1">Concept</div>
+                                <div class="font-bold text-white text-sm">Escape Velocity</div>
+                            </div>
+                            <div class="glass-card p-4 rounded-lg text-center">
+                                <div class="text-xs text-zinc-500 uppercase tracking-wider mb-1">Paper</div>
+                                <div class="font-bold text-white text-sm">Phil. Trans.</div>
+                            </div>
+                            <div class="glass-card p-4 rounded-lg text-center">
+                                <div class="text-xs text-zinc-500 uppercase tracking-wider mb-1">Successor</div>
+                                <div class="font-bold text-white text-sm">Laplace</div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="grid grid-cols-3 gap-4">
-                        <div class="glass-card rounded-xl p-6 text-center border-t border-white/20">
-                            <div class="text-3xl font-light text-white mb-2 font-serif">M</div>
-                            <div class="text-xs text-zinc-500 uppercase tracking-wider">Mass</div>
+                    
+                    <div class="relative">
+                        <div class="glass-card p-2 rounded-2xl border-white/10">
+                             <img src="https://image.pollinations.ai/prompt/18th%20century%20diagram%20of%20a%20dark%20star%20newtonian%20physics%20parchment%20vintage%20science%20cinematic?width=800&height=1000&nologo=true" class="rounded-xl w-full object-cover opacity-80" alt="Michell Diagram">
+                             <div class="absolute bottom-6 left-6 right-6 p-6 glass-card bg-black/80 rounded-xl border border-white/10">
+                                <div class="font-serif italic text-zinc-300">"Light attracted by gravity... made to return towards it."</div>
+                             </div>
                         </div>
-                        <div class="glass-card rounded-xl p-6 text-center border-t border-white/20">
-                            <div class="text-3xl font-light text-white mb-2 font-serif">J</div>
-                            <div class="text-xs text-zinc-500 uppercase tracking-wider">Spin</div>
+                    </div>
+                </div>
+
+                <!-- 2. Einstein -->
+                <div class="grid lg:grid-cols-2 gap-16 items-start">
+                    <div class="lg:order-2">
+                         <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 text-xs font-mono text-zinc-300 mb-6">
+                            <span class="w-2 h-2 rounded-full bg-zinc-500"></span> 1915: General Relativity
                         </div>
-                        <div class="glass-card rounded-xl p-6 text-center border-t border-white/20">
-                            <div class="text-3xl font-light text-white mb-2 font-serif">Q</div>
-                            <div class="text-xs text-zinc-500 uppercase tracking-wider">Charge</div>
+                        <h3 class="text-4xl font-cinzel text-white mb-6">Einstein's Revolution</h3>
+                        
+                        <!-- Intro -->
+                        <p class="text-zinc-400 text-lg leading-relaxed mb-6 text-justify-academic">
+                            In November 1915, Albert Einstein presented his field equations to the Prussian Academy of Sciences. He dismantled the Newtonian framework of fixed space and absolute time. Instead, he proposed a dynamic, four-dimensional fabric called spacetime, which is warped by the presence of mass and energy. Gravity is not a force, but a geometric feature.
+                        </p>
+
+                        <!-- Deep Dive Accordion -->
+                        <details class="deep-dive mb-8">
+                            <summary>DEEP DIVE: The Field Equations</summary>
+                            <div class="deep-dive-content">
+                                <p class="mb-4">
+                                    The equation <strong>G<sub>μν</sub> = 8πT<sub>μν</sub></strong> is deceptive in its brevity. It represents a system of 10 non-linear partial differential equations.
+                                </p>
+                                <ul class="list-disc pl-5 space-y-2 mb-4 text-zinc-400">
+                                    <li><strong>G<sub>μν</sub> (Einstein Tensor):</strong> Describes the curvature of space and time.</li>
+                                    <li><strong>T<sub>μν</sub> (Stress-Energy Tensor):</strong> Describes the density and flux of energy and momentum.</li>
+                                </ul>
+                                <p>
+                                    This framework predicted that light follows the curvature of space (geodesics). Near a massive object, these paths bend. If the mass is concentrated enough, the curvature becomes so steep that the geodesics loop back on themselves—trapping light not by pulling it back, but by bending the road it travels on.
+                                </p>
+                            </div>
+                        </details>
+
+                        <!-- Data Viz -->
+                        <div class="mb-8">
+                            <div class="flex justify-between text-xs font-mono text-zinc-500 mb-2">
+                                <span>THEORY VERIFICATION</span>
+                                <span>99.9%</span>
+                            </div>
+                            <div class="data-bar-container">
+                                <div class="data-bar-fill" style="width: 99.9%"></div>
+                            </div>
+                        </div>
+
+                         <!-- Key Figures Grid -->
+                        <div class="key-figures-grid">
+                            <div class="glass-card p-4 rounded-lg text-center">
+                                <div class="text-xs text-zinc-500 uppercase tracking-wider mb-1">Key Insight</div>
+                                <div class="font-bold text-white text-sm">Equivalence</div>
+                            </div>
+                            <div class="glass-card p-4 rounded-lg text-center">
+                                <div class="text-xs text-zinc-500 uppercase tracking-wider mb-1">Tool</div>
+                                <div class="font-bold text-white text-sm">Tensors</div>
+                            </div>
+                            <div class="glass-card p-4 rounded-lg text-center">
+                                <div class="text-xs text-zinc-500 uppercase tracking-wider mb-1">Rival</div>
+                                <div class="font-bold text-white text-sm">Hilbert</div>
+                            </div>
+                            <div class="glass-card p-4 rounded-lg text-center">
+                                <div class="text-xs text-zinc-500 uppercase tracking-wider mb-1">Legacy</div>
+                                <div class="font-bold text-white text-sm">Spacetime</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="relative lg:order-1">
+                        <div class="glass-card p-2 rounded-2xl border-white/10">
+                             <img src="https://image.pollinations.ai/prompt/albert%20einstein%20chalkboard%20general%20relativity%20formulas%20spacetime%20grid%20warped%20cinematic%20photorealistic?width=800&height=1000&nologo=true" class="rounded-xl w-full object-cover opacity-80" alt="Einstein">
+                             <div class="absolute bottom-6 left-6 right-6 p-6 glass-card bg-black/80 rounded-xl border border-white/10">
+                                <div class="font-serif italic text-zinc-300">"Matter tells space how to curve. Space tells matter how to move."</div>
+                             </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 3. Schwarzschild -->
+                <div class="grid lg:grid-cols-2 gap-16 items-start">
+                    <div>
+                         <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 text-xs font-mono text-zinc-300 mb-6">
+                            <span class="w-2 h-2 rounded-full bg-zinc-500"></span> 1916: The Exact Solution
+                        </div>
+                        <h3 class="text-4xl font-cinzel text-white mb-6">Schwarzschild's Limit</h3>
+                        
+                        <!-- Intro -->
+                        <p class="text-zinc-400 text-lg leading-relaxed mb-6 text-justify-academic">
+                            Serving on the Russian front during WWI, Karl Schwarzschild managed to solve Einstein's equations for a non-rotating spherical mass. He sent the letter to Einstein just months before dying of an autoimmune disease. His solution contained a singularity—a point where the math blew up—surrounded by a spherical boundary now known as the Event Horizon.
+                        </p>
+
+                        <!-- Deep Dive Accordion -->
+                        <details class="deep-dive mb-8">
+                            <summary>DEEP DIVE: The Mathematical Singularity</summary>
+                            <div class="deep-dive-content">
+                                <p class="mb-4">
+                                    The metric contains two critical points where the coefficient goes to infinity or zero:
+                                </p>
+                                <ul class="list-disc pl-5 space-y-2 mb-4 text-zinc-400">
+                                    <li><strong>r = 0:</strong> The physical singularity. Curvature is infinite. Physics breaks down.</li>
+                                    <li><strong>r = 2GM/c²:</strong> The coordinate singularity. Originally thought to be physical, later proven (by Eddington and Finkelstein) to be an illusion of the coordinate system choice. It is a one-way membrane.</li>
+                                </ul>
+                                <p>
+                                    This radius is shockingly small. To turn Earth into a black hole, you would need to compress its entire mass into a marble of radius 9mm. For the Sun, it is 3km.
+                                </p>
+                            </div>
+                        </details>
+
+                        <!-- Data Viz -->
+                        <div class="mb-8">
+                            <div class="flex justify-between text-xs font-mono text-zinc-500 mb-2">
+                                <span>RADIUS COMPRESSION RATIO</span>
+                                <span>1 : 100,000,000</span>
+                            </div>
+                            <div class="data-bar-container">
+                                <div class="data-bar-fill" style="width: 15%"></div>
+                            </div>
+                        </div>
+
+                         <!-- Key Figures Grid -->
+                        <div class="key-figures-grid">
+                            <div class="glass-card p-4 rounded-lg text-center">
+                                <div class="text-xs text-zinc-500 uppercase tracking-wider mb-1">Context</div>
+                                <div class="font-bold text-white text-sm">WWI Front</div>
+                            </div>
+                            <div class="glass-card p-4 rounded-lg text-center">
+                                <div class="text-xs text-zinc-500 uppercase tracking-wider mb-1">Discovery</div>
+                                <div class="font-bold text-white text-sm">Exact Solution</div>
+                            </div>
+                            <div class="glass-card p-4 rounded-lg text-center">
+                                <div class="text-xs text-zinc-500 uppercase tracking-wider mb-1">Radius</div>
+                                <div class="font-bold text-white text-sm">2GM/c²</div>
+                            </div>
+                            <div class="glass-card p-4 rounded-lg text-center">
+                                <div class="text-xs text-zinc-500 uppercase tracking-wider mb-1">Fate</div>
+                                <div class="font-bold text-white text-sm">Tragedy</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="relative">
+                        <div class="glass-card p-2 rounded-2xl border-white/10">
+                             <img src="https://image.pollinations.ai/prompt/karl%20schwarzschild%20ww1%20trench%20physics%20letters%20sepia%20cinematic%20dramatic%20lighting?width=800&height=1000&nologo=true" class="rounded-xl w-full object-cover opacity-80" alt="Schwarzschild">
+                             <div class="absolute bottom-6 left-6 right-6 p-6 glass-card bg-black/80 rounded-xl border border-white/10">
+                                <div class="font-serif italic text-zinc-300">"The war treated me kindly enough to allow me this walk in the land of your ideas."</div>
+                             </div>
                         </div>
                     </div>
                 </div>
@@ -778,511 +622,953 @@
         </div>
     </section>
 
-    <!-- Module 3: Physics & Mathematics -->
-    <section id="physics" class="py-32 relative border-t border-white/5 overflow-hidden">
-         <div class="section-bg-container">
-            <img src="https://hoirqrkdgbmvpwutwuwj.supabase.co/storage/v1/object/public/assets/assets/178eddfc-630d-4fbf-8da6-e94a707fb957_1600w.jpg" 
-                 class="section-bg" alt="Physics Background">
+    <!-- MODULE 2: ANATOMY DASHBOARD -->
+    <section id="anatomy" class="py-20 relative border-t border-white/5 bg-[#050505]">
+        <div class="max-w-[1600px] mx-auto px-6 relative z-10">
+            <!-- Header -->
+            <div class="flex items-center gap-6 mb-12">
+                <span class="text-6xl font-cinzel text-white/5 font-bold select-none">02</span>
+                <div>
+                    <div class="text-xs text-zinc-500 uppercase tracking-[0.2em] font-semibold">Structural Analysis</div>
+                    <h2 class="text-4xl font-semibold tracking-tight text-white">Anatomy Dashboard</h2>
+                </div>
+            </div>
+
+            <!-- 3-Column Dashboard -->
+            <div class="dashboard-grid">
+                
+                <!-- LEFT COLUMN: PHYSICS DATA -->
+                <div class="space-y-6">
+                    <div class="glass-card p-6 rounded-xl border-l-2 border-l-blue-500/50">
+                        <h4 class="text-sm font-bold text-zinc-300 uppercase tracking-wider mb-4">Metric Parameters</h4>
+                        <div class="space-y-4 font-mono text-xs">
+                            <div class="flex justify-between items-center border-b border-white/5 pb-2">
+                                <span class="text-zinc-500">Mass (M)</span>
+                                <span class="text-white">Variable</span>
+                            </div>
+                            <div class="flex justify-between items-center border-b border-white/5 pb-2">
+                                <span class="text-zinc-500">Spin (J)</span>
+                                <span class="text-white">0 ≤ a ≤ 1</span>
+                            </div>
+                            <div class="flex justify-between items-center border-b border-white/5 pb-2">
+                                <span class="text-zinc-500">Charge (Q)</span>
+                                <span class="text-white">~ 0 (Neutral)</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="glass-card p-6 rounded-xl">
+                        <h4 class="text-sm font-bold text-zinc-300 uppercase tracking-wider mb-4">Critical Radii</h4>
+                        <div class="space-y-4">
+                            <div>
+                                <div class="flex justify-between text-xs text-zinc-400 mb-1">
+                                    <span>Singularity</span>
+                                    <span class="font-mono text-white">r = 0</span>
+                                </div>
+                                <div class="h-1 bg-white/10 rounded overflow-hidden"><div class="h-full bg-red-500 w-full"></div></div>
+                            </div>
+                            <div>
+                                <div class="flex justify-between text-xs text-zinc-400 mb-1">
+                                    <span>Event Horizon</span>
+                                    <span class="font-mono text-white">r = 2M</span>
+                                </div>
+                                <div class="h-1 bg-white/10 rounded overflow-hidden"><div class="h-full bg-white w-2/3"></div></div>
+                            </div>
+                            <div>
+                                <div class="flex justify-between text-xs text-zinc-400 mb-1">
+                                    <span>Photon Sphere</span>
+                                    <span class="font-mono text-white">r = 3M</span>
+                                </div>
+                                <div class="h-1 bg-white/10 rounded overflow-hidden"><div class="h-full bg-yellow-500 w-full"></div></div>
+                            </div>
+                             <div>
+                                <div class="flex justify-between text-xs text-zinc-400 mb-1">
+                                    <span>ISCO (Stable Orbit)</span>
+                                    <span class="font-mono text-white">r = 6M</span>
+                                </div>
+                                <div class="h-1 bg-white/10 rounded overflow-hidden"><div class="h-full bg-blue-500 w-full"></div></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="glass-card p-6 rounded-xl">
+                         <h4 class="text-sm font-bold text-zinc-300 uppercase tracking-wider mb-4">No-Hair Theorem</h4>
+                         <p class="text-xs text-zinc-400 leading-relaxed mb-4">
+                            "Black holes have no hair." A stationary black hole is completely described by Mass, Spin, and Charge. All other information (baryon number, lepton number, shape) is radiated away during formation.
+                         </p>
+                         <div class="grid grid-cols-3 gap-2">
+                             <div class="bg-white/5 p-2 rounded text-center border border-white/5">
+                                 <div class="text-lg font-serif">M</div>
+                             </div>
+                             <div class="bg-white/5 p-2 rounded text-center border border-white/5">
+                                 <div class="text-lg font-serif">J</div>
+                             </div>
+                             <div class="bg-white/5 p-2 rounded text-center border border-white/5">
+                                 <div class="text-lg font-serif">Q</div>
+                             </div>
+                         </div>
+                    </div>
+                </div>
+
+                <!-- CENTER COLUMN: VISUAL ENGINE (STICKY) -->
+                <div class="relative min-h-[500px] lg:min-h-auto">
+                    <div class="sticky-center glass-card rounded-2xl overflow-hidden shadow-2xl shadow-black/50 border border-white/10">
+                        <div id="blackhole-wrapper" class="w-full h-full relative bg-radial-gradient">
+                            <!-- Canvas injected here -->
+                            <canvas id="blackhole-canvas"></canvas>
+
+                            <!-- Overlay UI -->
+                            <div class="absolute top-4 left-4 flex gap-2">
+                                <span class="px-2 py-1 bg-red-500/20 border border-red-500/30 text-[10px] text-red-200 uppercase tracking-wider rounded">Live Sim</span>
+                                <span class="px-2 py-1 bg-white/5 border border-white/10 text-[10px] text-zinc-400 uppercase tracking-wider rounded">Kerr Metric</span>
+                            </div>
+                            <div class="absolute bottom-6 w-full text-center pointer-events-none">
+                                <p class="text-[10px] text-zinc-500 uppercase tracking-[0.3em]">Interactive Model</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- RIGHT COLUMN: EXPLANATIONS -->
+                <div class="space-y-6">
+                    <!-- Feature 1 -->
+                    <div class="glass-card p-6 rounded-xl group hover:bg-white/5 transition-colors cursor-default">
+                        <div class="flex items-center justify-between mb-3">
+                            <h4 class="font-cinzel text-lg text-white group-hover:text-silver-gradient">The Event Horizon</h4>
+                            <i data-lucide="circle" class="w-4 h-4 text-zinc-500"></i>
+                        </div>
+                        <p class="text-sm text-zinc-400 leading-relaxed mb-4">
+                            The point of no return. Here, the escape velocity equals the speed of light. To an outside observer, an object falling in appears to freeze and fade (redshift) forever. To the object, they cross without drama.
+                        </p>
+                        <div class="h-px w-full bg-white/10 my-4"></div>
+                        <div class="flex gap-4">
+                            <div class="text-center">
+                                <div class="text-[10px] text-zinc-500 uppercase">Temp</div>
+                                <div class="text-xs font-mono text-white">~0 K</div>
+                            </div>
+                            <div class="text-center">
+                                <div class="text-[10px] text-zinc-500 uppercase">Time</div>
+                                <div class="text-xs font-mono text-white">Frozen</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Feature 2 -->
+                    <div class="glass-card p-6 rounded-xl group hover:bg-white/5 transition-colors cursor-default">
+                         <div class="flex items-center justify-between mb-3">
+                            <h4 class="font-cinzel text-lg text-white group-hover:text-silver-gradient">The Photon Sphere</h4>
+                            <i data-lucide="orbit" class="w-4 h-4 text-zinc-500"></i>
+                        </div>
+                        <p class="text-sm text-zinc-400 leading-relaxed mb-4">
+                            Located at 1.5Rs (for non-rotating). Here, gravity is so strong that photons are forced into unstable circular orbits. If you stood here, you could see the back of your own head.
+                        </p>
+                        <div class="h-px w-full bg-white/10 my-4"></div>
+                        <div class="text-[10px] text-zinc-500 uppercase mb-1">Orbit Stability</div>
+                        <div class="w-full bg-white/10 h-1 rounded overflow-hidden"><div class="w-1/4 bg-red-500 h-full"></div></div>
+                        <div class="text-[10px] text-red-400 mt-1">Highly Unstable</div>
+                    </div>
+
+                    <!-- Feature 3 -->
+                    <div class="glass-card p-6 rounded-xl group hover:bg-white/5 transition-colors cursor-default">
+                         <div class="flex items-center justify-between mb-3">
+                            <h4 class="font-cinzel text-lg text-white group-hover:text-silver-gradient">The Ergosphere</h4>
+                            <i data-lucide="refresh-cw" class="w-4 h-4 text-zinc-500"></i>
+                        </div>
+                        <p class="text-sm text-zinc-400 leading-relaxed mb-4">
+                            Only in rotating (Kerr) black holes. A region outside the horizon where spacetime is dragged along with the rotation (frame-dragging). It is impossible to stand still here.
+                        </p>
+                        <div class="h-px w-full bg-white/10 my-4"></div>
+                         <div class="flex justify-between items-center">
+                             <span class="text-[10px] text-zinc-500 uppercase">Penrose Process</span>
+                             <span class="text-xs text-green-400">Energy Extraction Possible</span>
+                         </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SINGULARITIES GRID -->
+            <div class="mt-20">
+                <h3 class="text-2xl font-cinzel text-white mb-8 border-b border-white/10 pb-4">Types of Singularities</h3>
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- Card 1 -->
+                    <div class="glass-card p-6 rounded-xl">
+                        <h4 class="text-white font-bold mb-2">Schwarzschild</h4>
+                        <p class="text-xs text-zinc-400 mb-4">Point-like singularity. Infinite density, zero volume. The classic result for non-rotating mass.</p>
+                        <div class="w-full h-24 bg-black rounded border border-white/5 flex items-center justify-center relative overflow-hidden">
+                             <div class="w-1 h-1 bg-white rounded-full shadow-[0_0_20px_white]"></div>
+                        </div>
+                    </div>
+                    <!-- Card 2 -->
+                    <div class="glass-card p-6 rounded-xl">
+                        <h4 class="text-white font-bold mb-2">Ring (Kerr)</h4>
+                        <p class="text-xs text-zinc-400 mb-4">A one-dimensional ring due to angular momentum. Theoretically traversable in some math models.</p>
+                         <div class="w-full h-24 bg-black rounded border border-white/5 flex items-center justify-center relative overflow-hidden">
+                             <div class="w-8 h-2 border border-white rounded-full shadow-[0_0_10px_white]"></div>
+                        </div>
+                    </div>
+                    <!-- Card 3 -->
+                    <div class="glass-card p-6 rounded-xl">
+                        <h4 class="text-white font-bold mb-2">Naked</h4>
+                        <p class="text-xs text-zinc-400 mb-4">A singularity without an event horizon. Prohibited by the Cosmic Censorship Hypothesis.</p>
+                         <div class="w-full h-24 bg-black rounded border border-white/5 flex items-center justify-center relative overflow-hidden">
+                             <div class="w-1 h-1 bg-red-500 rounded-full shadow-[0_0_20px_red] animate-pulse"></div>
+                        </div>
+                    </div>
+                    <!-- Card 4 -->
+                    <div class="glass-card p-6 rounded-xl">
+                        <h4 class="text-white font-bold mb-2">Coordinate</h4>
+                        <p class="text-xs text-zinc-400 mb-4">Not a physical singularity, but a flaw in the math (e.g., at the Event Horizon in Schwarzschild coords).</p>
+                    </div>
+                    <!-- Card 5 -->
+                    <div class="glass-card p-6 rounded-xl">
+                        <h4 class="text-white font-bold mb-2">Big Bang</h4>
+                        <p class="text-xs text-zinc-400 mb-4">A past singularity. Similar mathematics, but inverted time direction (expansion vs collapse).</p>
+                    </div>
+                    <!-- Card 6 -->
+                    <div class="glass-card p-6 rounded-xl">
+                        <h4 class="text-white font-bold mb-2">Big Crunch</h4>
+                        <p class="text-xs text-zinc-400 mb-4">A future singularity. The potential end state of a closed universe collapsing.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- MODULE 3: DEEP DIVE (PHYSICS & MATH) -->
+    <section id="deep-dive" class="py-32 relative border-t border-white/5 overflow-hidden">
+        <div class="absolute inset-0 z-0 opacity-10 pointer-events-none">
+            <img src="https://image.pollinations.ai/prompt/blackboard%20physics%20equations%20general%20relativity%20calculus%20tensor%20math%20dark%20cinematic?width=1920&height=1080&nologo=true" class="w-full h-full object-cover" alt="Math BG">
         </div>
 
-        <div class="max-w-7xl mx-auto px-6 relative z-10">
+        <div class="max-w-[1400px] mx-auto px-6 relative z-10">
              <div class="flex items-center gap-6 mb-20">
                 <span class="text-8xl font-cinzel text-white/5 font-bold absolute -left-6 -top-10 select-none">03</span>
                 <div class="relative">
                     <div class="text-xs text-zinc-500 uppercase tracking-[0.2em] mb-2 font-semibold">Module Three</div>
-                    <h2 class="text-4xl md:text-5xl font-semibold tracking-tight">Physics &amp; Mathematics</h2>
+                    <h2 class="text-5xl md:text-6xl font-semibold tracking-tight">Deep Dive: Physics &amp; Math</h2>
                 </div>
             </div>
-            
-            <!-- Schwarzschild Metric -->
-            <div class="glass-card rounded-2xl p-8 md:p-16 mb-12 text-center relative overflow-hidden">
-                <div class="absolute inset-0 bg-gradient-to-b from-transparent via-white/5 to-transparent"></div>
-                
-                <div class="relative z-10">
-                    <div class="text-xs text-zinc-500 uppercase tracking-widest mb-6">The Heart of Black Hole Physics</div>
-                    <h3 class="text-3xl md:text-4xl font-semibold tracking-tight mb-8">The Schwarzschild Metric</h3>
-                    
-                    <div class="equation-box rounded-xl p-8 md:p-12 inline-block mb-10 shadow-2xl shadow-black/50">
-                        <div class="text-xl md:text-3xl text-white font-serif italic leading-relaxed">
-                            ds² = -(1 - <span class="text-zinc-400">R<sub>s</sub></span>/r)c²dt² + (1 - <span class="text-zinc-400">R<sub>s</sub></span>/r)<sup>-1</sup>dr² + r²dΩ²
+
+            <!-- Existing Intro Expanded -->
+            <div class="max-w-4xl mb-24">
+                <p class="text-xl text-zinc-300 leading-relaxed font-light mb-8 text-justify-academic">
+                    To truly understand black holes, we must abandon Newtonian intuition. We enter the realm of Differential Geometry, where gravity is the curvature of the spacetime manifold itself. The Schwarzschild metric is the first solution to Einstein's field equations, describing the geometry of spacetime surrounding a spherical mass.
+                </p>
+                <div class="equation-box p-8 rounded-xl text-center shadow-2xl bg-black/50 backdrop-blur-xl border border-white/10">
+                    <div class="text-2xl md:text-4xl text-white font-serif italic mb-4">
+                         ds² = -(1 - <span class="text-zinc-400">R<sub>s</sub></span>/r)c²dt² + (1 - <span class="text-zinc-400">R<sub>s</sub></span>/r)<sup>-1</sup>dr² + r²dΩ²
+                    </div>
+                    <div class="text-xs text-zinc-500 font-mono uppercase tracking-widest">The Schwarzschild Line Element</div>
+                </div>
+            </div>
+
+            <!-- NEW: GLOSSARY GRID (12 ITEMS) -->
+            <div class="mb-32">
+                <h3 class="text-2xl font-cinzel text-white mb-8 flex items-center gap-3">
+                    <i data-lucide="book" class="w-5 h-5 text-zinc-500"></i> Glossary of Terms
+                </h3>
+                <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                    <!-- 1 -->
+                    <div class="glass-card p-4 rounded-lg hover:bg-white/5 transition-colors">
+                        <div class="text-xs text-zinc-500 uppercase mb-1">Concept</div>
+                        <h4 class="text-white font-bold mb-2">Manifold</h4>
+                        <p class="text-[10px] text-zinc-400 leading-relaxed">A topological space that locally resembles Euclidean space near each point.</p>
+                    </div>
+                    <!-- 2 -->
+                    <div class="glass-card p-4 rounded-lg hover:bg-white/5 transition-colors">
+                        <div class="text-xs text-zinc-500 uppercase mb-1">Math</div>
+                        <h4 class="text-white font-bold mb-2">Geodesic</h4>
+                        <p class="text-[10px] text-zinc-400 leading-relaxed">The shortest path between two points in a curved space. Light follows these.</p>
+                    </div>
+                    <!-- 3 -->
+                    <div class="glass-card p-4 rounded-lg hover:bg-white/5 transition-colors">
+                        <div class="text-xs text-zinc-500 uppercase mb-1">Object</div>
+                        <h4 class="text-white font-bold mb-2">Metric Tensor</h4>
+                        <p class="text-[10px] text-zinc-400 leading-relaxed">A function that defines distance and angles at every point in spacetime.</p>
+                    </div>
+                    <!-- 4 -->
+                    <div class="glass-card p-4 rounded-lg hover:bg-white/5 transition-colors">
+                        <div class="text-xs text-zinc-500 uppercase mb-1">Limit</div>
+                        <h4 class="text-white font-bold mb-2">TOV Limit</h4>
+                        <p class="text-[10px] text-zinc-400 leading-relaxed">Tolman-Oppenheimer-Volkoff. Max mass of a neutron star (~2.2M☉) before collapse.</p>
+                    </div>
+                    <!-- 5 -->
+                    <div class="glass-card p-4 rounded-lg hover:bg-white/5 transition-colors">
+                        <div class="text-xs text-zinc-500 uppercase mb-1">Effect</div>
+                        <h4 class="text-white font-bold mb-2">Frame Dragging</h4>
+                        <p class="text-[10px] text-zinc-400 leading-relaxed">Rotating mass drags spacetime with it. Also known as the Lense-Thirring effect.</p>
+                    </div>
+                    <!-- 6 -->
+                    <div class="glass-card p-4 rounded-lg hover:bg-white/5 transition-colors">
+                        <div class="text-xs text-zinc-500 uppercase mb-1">Region</div>
+                        <h4 class="text-white font-bold mb-2">ISCO</h4>
+                        <p class="text-[10px] text-zinc-400 leading-relaxed">Innermost Stable Circular Orbit. The closest matter can orbit safely.</p>
+                    </div>
+                    <!-- 7 -->
+                    <div class="glass-card p-4 rounded-lg hover:bg-white/5 transition-colors">
+                        <div class="text-xs text-zinc-500 uppercase mb-1">Radiation</div>
+                        <h4 class="text-white font-bold mb-2">Bremsstrahlung</h4>
+                        <p class="text-[10px] text-zinc-400 leading-relaxed">"Braking radiation" emitted by decelerating charged particles in the disk.</p>
+                    </div>
+                    <!-- 8 -->
+                    <div class="glass-card p-4 rounded-lg hover:bg-white/5 transition-colors">
+                        <div class="text-xs text-zinc-500 uppercase mb-1">Structure</div>
+                        <h4 class="text-white font-bold mb-2">Jet</h4>
+                        <p class="text-[10px] text-zinc-400 leading-relaxed">Relativistic beam of matter ejected along the rotation axis.</p>
+                    </div>
+                    <!-- 9 -->
+                    <div class="glass-card p-4 rounded-lg hover:bg-white/5 transition-colors">
+                        <div class="text-xs text-zinc-500 uppercase mb-1">Phenomenon</div>
+                        <h4 class="text-white font-bold mb-2">Tidal Force</h4>
+                        <p class="text-[10px] text-zinc-400 leading-relaxed">Differential gravity force stretching an object. Source of Spaghettification.</p>
+                    </div>
+                    <!-- 10 -->
+                    <div class="glass-card p-4 rounded-lg hover:bg-white/5 transition-colors">
+                        <div class="text-xs text-zinc-500 uppercase mb-1">Light</div>
+                        <h4 class="text-white font-bold mb-2">Gravitational Lens</h4>
+                        <p class="text-[10px] text-zinc-400 leading-relaxed">Bending of light from a distant source around a massive object.</p>
+                    </div>
+                    <!-- 11 -->
+                    <div class="glass-card p-4 rounded-lg hover:bg-white/5 transition-colors">
+                        <div class="text-xs text-zinc-500 uppercase mb-1">Effect</div>
+                        <h4 class="text-white font-bold mb-2">Redshift</h4>
+                        <p class="text-[10px] text-zinc-400 leading-relaxed">Light losing energy as it climbs out of a gravity well, shifting red.</p>
+                    </div>
+                    <!-- 12 -->
+                    <div class="glass-card p-4 rounded-lg hover:bg-white/5 transition-colors">
+                        <div class="text-xs text-zinc-500 uppercase mb-1">Math</div>
+                        <h4 class="text-white font-bold mb-2">Tensor</h4>
+                        <p class="text-[10px] text-zinc-400 leading-relaxed">Geometric object describing linear relations between vectors/scalars.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SUBSECTION 1: TIME DILATION -->
+            <div class="grid lg:grid-cols-2 gap-16 items-start mb-32 border-t border-white/5 pt-16">
+                <div>
+                     <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 text-xs font-mono text-blue-200 mb-6">
+                        <i data-lucide="clock" class="w-3 h-3"></i> Temporal Mechanics
+                    </div>
+                    <h3 class="text-4xl font-cinzel text-white mb-6">Gravitational Time Dilation</h3>
+
+                    <p class="text-zinc-400 text-lg leading-relaxed mb-6 text-justify-academic">
+                        Near a massive body, time itself flows slower relative to a distant observer. This is not an illusion or a mechanical failure of clocks; it is a fundamental property of the universe. The closer you are to the event horizon, the slower you move through time. At the horizon itself, time stands still from the perspective of the outside universe.
+                    </p>
+
+                    <details class="deep-dive mb-8">
+                        <summary>DEEP DIVE: The Twin Paradox Extreme</summary>
+                        <div class="deep-dive-content">
+                            <p class="mb-4">
+                                The formula for time dilation near a Schwarzschild black hole is:
+                            </p>
+                            <div class="bg-black/30 p-4 rounded border border-white/10 font-mono text-sm text-center mb-4 text-zinc-300">
+                                t' = t * √(1 - Rs/r)
+                            </div>
+                            <p>
+                                If you were to hover just outside the event horizon of a supermassive black hole for what felt like one hour, millions of years could pass in the outside universe. This effect allows for one-way time travel into the future. However, the energy required to maintain a stationary position there would be infinite.
+                            </p>
+                        </div>
+                    </details>
+
+                    <div class="mb-8">
+                        <div class="flex justify-between text-xs font-mono text-zinc-500 mb-2">
+                            <span>TIME RATE AT HORIZON (Relative to Earth)</span>
+                            <span>0%</span>
+                        </div>
+                        <div class="data-bar-container">
+                            <div class="data-bar-fill" style="width: 0%"></div>
                         </div>
                     </div>
+
+                     <div class="key-figures-grid">
+                        <div class="glass-card p-4 rounded-lg text-center">
+                            <div class="text-xs text-zinc-500 uppercase tracking-wider mb-1">Film</div>
+                            <div class="font-bold text-white text-sm">Interstellar</div>
+                        </div>
+                        <div class="glass-card p-4 rounded-lg text-center">
+                            <div class="text-xs text-zinc-500 uppercase tracking-wider mb-1">Concept</div>
+                            <div class="font-bold text-white text-sm">Relativity</div>
+                        </div>
+                        <div class="glass-card p-4 rounded-lg text-center">
+                            <div class="text-xs text-zinc-500 uppercase tracking-wider mb-1">Test</div>
+                            <div class="font-bold text-white text-sm">GPS Satellites</div>
+                        </div>
+                        <div class="glass-card p-4 rounded-lg text-center">
+                            <div class="text-xs text-zinc-500 uppercase tracking-wider mb-1">Limit</div>
+                            <div class="font-bold text-white text-sm">Infinite</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="relative">
+                    <div class="glass-card p-2 rounded-2xl border-white/10 rotate-1 hover:rotate-0 transition-transform duration-500">
+                         <img src="https://image.pollinations.ai/prompt/warped%20clocks%20melting%20time%20near%20black%20hole%20event%20horizon%20surreal%20dali%20style%20cinematic%20photorealistic?width=800&height=1000&nologo=true" class="rounded-xl w-full object-cover" alt="Time Dilation">
+                    </div>
+                </div>
+            </div>
+
+            <!-- SUBSECTION 2: SPAGHETTIFICATION -->
+            <div class="grid lg:grid-cols-2 gap-16 items-start mb-32 border-t border-white/5 pt-16">
+                 <div class="relative lg:order-2">
+                     <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-red-500/10 border border-red-500/20 text-xs font-mono text-red-200 mb-6">
+                        <i data-lucide="scissors" class="w-3 h-3"></i> Tidal Forces
+                    </div>
+                    <h3 class="text-4xl font-cinzel text-white mb-6">Spaghettification</h3>
                     
-                    <div class="grid md:grid-cols-3 gap-6 text-left">
-                        <div class="p-4 border-l border-white/20 pl-6">
-                            <div class="text-white font-mono text-sm mb-2 opacity-80">Time Component</div>
-                            <div class="text-sm text-zinc-400 font-light">Clocks run slower near the horizon (Time Dilation).</div>
+                    <p class="text-zinc-400 text-lg leading-relaxed mb-6 text-justify-academic">
+                        Technically known as the tidal effect, this is the stretching of an object due to the difference in gravitational force between its head and its feet. In a small black hole, the gradient is so steep that you would be ripped apart into a stream of atoms long before crossing the horizon.
+                    </p>
+
+                    <details class="deep-dive mb-8">
+                        <summary>DEEP DIVE: The Tidal Tensor</summary>
+                        <div class="deep-dive-content">
+                            <p class="mb-4">
+                                The tidal force is proportional to M/r³. This means smaller black holes actually have <em>stronger</em> tidal forces at their horizons than supermassive ones.
+                            </p>
+                            <p>
+                                For a stellar-mass black hole, the tidal force at the horizon is enough to shred steel. For a supermassive black hole like M87*, the horizon is so far away (billions of km) that the tidal forces are negligible at the crossing point. You could cross the event horizon of a supermassive black hole without feeling anything unusual—until you approached the singularity.
+                            </p>
                         </div>
-                        <div class="p-4 border-l border-white/20 pl-6">
-                            <div class="text-white font-mono text-sm mb-2 opacity-80">Radial Component</div>
-                            <div class="text-sm text-zinc-400 font-light">Space stretches. Proper distance > coordinate distance.</div>
+                    </details>
+
+                    <div class="mb-8">
+                        <div class="flex justify-between text-xs font-mono text-zinc-500 mb-2">
+                            <span>STRUCTURAL INTEGRITY (Stellar Mass BH)</span>
+                            <span>CRITICAL FAILURE</span>
                         </div>
-                        <div class="p-4 border-l border-white/20 pl-6">
-                            <div class="text-white font-mono text-sm mb-2 opacity-80">Angular Component</div>
-                            <div class="text-sm text-zinc-400 font-light">Spherical symmetry is preserved.</div>
+                        <div class="data-bar-container">
+                            <div class="data-bar-fill bg-red-500" style="width: 1%"></div>
                         </div>
+                    </div>
+
+                     <div class="key-figures-grid">
+                        <div class="glass-card p-4 rounded-lg text-center">
+                            <div class="text-xs text-zinc-500 uppercase tracking-wider mb-1">Term</div>
+                            <div class="font-bold text-white text-sm">Hawking</div>
+                        </div>
+                        <div class="glass-card p-4 rounded-lg text-center">
+                            <div class="text-xs text-zinc-500 uppercase tracking-wider mb-1">Cause</div>
+                            <div class="font-bold text-white text-sm">Gradient</div>
+                        </div>
+                        <div class="glass-card p-4 rounded-lg text-center">
+                            <div class="text-xs text-zinc-500 uppercase tracking-wider mb-1">Outcome</div>
+                            <div class="font-bold text-white text-sm">Atomization</div>
+                        </div>
+                        <div class="glass-card p-4 rounded-lg text-center">
+                            <div class="text-xs text-zinc-500 uppercase tracking-wider mb-1">Geometry</div>
+                            <div class="font-bold text-white text-sm">Vertical</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="relative lg:order-1">
+                    <div class="glass-card p-2 rounded-2xl border-white/10 -rotate-1 hover:rotate-0 transition-transform duration-500">
+                         <img src="https://image.pollinations.ai/prompt/astronaut%20being%20stretched%20into%20spaghetti%20black%20hole%20tidal%20forces%20horror%20sci-fi%20cinematic%20dark?width=800&height=1000&nologo=true" class="rounded-xl w-full object-cover" alt="Spaghettification">
+                    </div>
+                </div>
+            </div>
+
+            <!-- SUBSECTION 3: REDSHIFT -->
+            <div class="grid lg:grid-cols-2 gap-16 items-start border-t border-white/5 pt-16">
+                <div>
+                     <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-orange-500/10 border border-orange-500/20 text-xs font-mono text-orange-200 mb-6">
+                        <i data-lucide="arrow-down-right" class="w-3 h-3"></i> Spectral Shift
+                    </div>
+                    <h3 class="text-4xl font-cinzel text-white mb-6">Gravitational Redshift</h3>
+                    
+                    <p class="text-zinc-400 text-lg leading-relaxed mb-6 text-justify-academic">
+                        As light attempts to climb out of the gravitational well of a black hole, it loses energy. Since the speed of light is constant, this loss of energy manifests as a decrease in frequency—a shift towards the red end of the spectrum.
+                    </p>
+
+                    <details class="deep-dive mb-8">
+                        <summary>DEEP DIVE: Infinite Redshift</summary>
+                        <div class="deep-dive-content">
+                            <p class="mb-4">
+                                At the event horizon, the redshift becomes infinite. A blue laser pointer shone outward from the horizon would be redshifted so far that its wavelength would exceed the size of the observable universe.
+                            </p>
+                            <p>
+                                This is why black holes are black. It's not just that light can't escape; it's that any light emitted from just above the horizon is redshifted into invisibility (radio waves and beyond) by the time it reaches us.
+                            </p>
+                        </div>
+                    </details>
+
+                    <div class="mb-8">
+                        <div class="flex justify-between text-xs font-mono text-zinc-500 mb-2">
+                            <span>WAVELENGTH SHIFT</span>
+                            <span>EXPONENTIAL</span>
+                        </div>
+                        <div class="data-bar-container">
+                            <div class="data-bar-fill bg-orange-500" style="width: 85%"></div>
+                        </div>
+                    </div>
+
+                     <div class="key-figures-grid">
+                        <div class="glass-card p-4 rounded-lg text-center">
+                            <div class="text-xs text-zinc-500 uppercase tracking-wider mb-1">Exp</div>
+                            <div class="font-bold text-white text-sm">Pound-Rebka</div>
+                        </div>
+                        <div class="glass-card p-4 rounded-lg text-center">
+                            <div class="text-xs text-zinc-500 uppercase tracking-wider mb-1">Color</div>
+                            <div class="font-bold text-white text-sm">Infrared</div>
+                        </div>
+                        <div class="glass-card p-4 rounded-lg text-center">
+                            <div class="text-xs text-zinc-500 uppercase tracking-wider mb-1">Energy</div>
+                            <div class="font-bold text-white text-sm">Loss</div>
+                        </div>
+                        <div class="glass-card p-4 rounded-lg text-center">
+                            <div class="text-xs text-zinc-500 uppercase tracking-wider mb-1">Use</div>
+                            <div class="font-bold text-white text-sm">Mapping</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="relative">
+                    <div class="glass-card p-2 rounded-2xl border-white/10 rotate-1 hover:rotate-0 transition-transform duration-500">
+                         <img src="https://image.pollinations.ai/prompt/spectrum%20of%20light%20shifting%20to%20red%20gravity%20well%20physics%20visualization%20abstract%20cinematic?width=800&height=1000&nologo=true" class="rounded-xl w-full object-cover" alt="Redshift">
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Module 4: Formation -->
+    <!-- MODULE 4: FORMATION & EVOLUTION -->
     <section id="formation" class="py-32 relative border-t border-white/5 overflow-hidden">
-        <div class="section-bg-container">
-            <img src="https://hoirqrkdgbmvpwutwuwj.supabase.co/storage/v1/object/public/assets/assets/17025930-8806-4149-95d8-50014ddf5a54_1600w.jpg" 
-                 class="section-bg" alt="Formation Background">
+        <div class="absolute inset-0 z-0 opacity-20 pointer-events-none">
+            <img src="https://image.pollinations.ai/prompt/supernova%20explosion%20star%20collapse%20nebula%20cosmic%20dust%20cinematic%208k%20photorealistic?width=1920&height=1080&nologo=true" class="w-full h-full object-cover mix-blend-lighten" alt="Formation BG">
         </div>
 
-        <div class="max-w-7xl mx-auto px-6 relative z-10">
+        <div class="max-w-[1400px] mx-auto px-6 relative z-10">
              <div class="flex items-center gap-6 mb-20">
                 <span class="text-8xl font-cinzel text-white/5 font-bold absolute -left-6 -top-10 select-none">04</span>
                 <div class="relative">
                     <div class="text-xs text-zinc-500 uppercase tracking-[0.2em] mb-2 font-semibold">Module Four</div>
-                    <h2 class="text-4xl md:text-5xl font-semibold tracking-tight">Formation &amp; Evolution</h2>
+                    <h2 class="text-5xl md:text-6xl font-semibold tracking-tight">Formation &amp; Evolution</h2>
                 </div>
             </div>
-            
-            <!-- Mass Classes -->
-            <div class="grid md:grid-cols-3 gap-6 mb-16">
-                <div class="glass-card rounded-xl p-8 hover:border-white/30 transition-all group">
-                    <div class="w-16 h-16 rounded-full bg-white/5 flex items-center justify-center mb-6 mx-auto border border-white/10 group-hover:scale-110 transition-transform duration-500">
-                        <i data-lucide="star" class="w-6 h-6 text-white" style="stroke-width: 1.5"></i>
+
+            <div class="space-y-32">
+                <!-- 1. Stellar Mass -->
+                <div class="grid lg:grid-cols-2 gap-16 items-start">
+                    <div>
+                        <h3 class="text-3xl font-cinzel text-white mb-6">Stellar Mass Black Holes</h3>
+                        <p class="text-zinc-400 text-lg leading-relaxed mb-6 text-justify-academic">
+                            The most common type of black hole forms from the death of massive stars. When a star at least 20 times more massive than our Sun runs out of fuel, thermal pressure can no longer support its weight. The core collapses in a fraction of a second, causing a supernova explosion while the center crushes down into a singularity.
+                        </p>
+                        <details class="deep-dive mb-8">
+                            <summary>DEEP DIVE: The TOV Limit</summary>
+                            <div class="deep-dive-content">
+                                <p class="mb-4">
+                                    The Tolman-Oppenheimer-Volkoff limit defines the maximum mass of a neutron star (approx 2.17 solar masses). If the remnant core exceeds this mass, neutron degeneracy pressure fails, and total collapse is inevitable.
+                                </p>
+                            </div>
+                        </details>
+                        <div class="mb-8">
+                            <div class="flex justify-between text-xs font-mono text-zinc-500 mb-2">
+                                <span>POPULATION ESTIMATE (Milky Way)</span>
+                                <span>~100,000,000</span>
+                            </div>
+                            <div class="data-bar-container">
+                                <div class="data-bar-fill" style="width: 20%"></div>
+                            </div>
+                        </div>
+                        <div class="key-figures-grid">
+                            <div class="glass-card p-4 rounded-lg text-center"><div class="text-xs text-zinc-500 uppercase mb-1">Source</div><div class="font-bold text-white text-sm">Supernova</div></div>
+                            <div class="glass-card p-4 rounded-lg text-center"><div class="text-xs text-zinc-500 uppercase mb-1">Mass</div><div class="font-bold text-white text-sm">3-100 M☉</div></div>
+                            <div class="glass-card p-4 rounded-lg text-center"><div class="text-xs text-zinc-500 uppercase mb-1">Example</div><div class="font-bold text-white text-sm">Cygnus X-1</div></div>
+                            <div class="glass-card p-4 rounded-lg text-center"><div class="text-xs text-zinc-500 uppercase mb-1">Rate</div><div class="font-bold text-white text-sm">1/Sec</div></div>
+                        </div>
                     </div>
-                    <h4 class="text-xl font-medium text-center mb-2 font-cinzel">Stellar Mass</h4>
-                    <div class="text-center text-sm text-zinc-400 mb-4 font-mono">3 - 100 M<sub>☉</sub></div>
-                    <p class="text-sm text-zinc-400 text-center font-light leading-relaxed">Born from the catastrophic collapse of massive stars. Detected via X-ray binaries.</p>
+                    <div class="glass-card p-2 rounded-2xl border-white/10"><img src="https://image.pollinations.ai/prompt/cygnus%20x-1%20accretion%20disk%20binary%20star%20system%20x-ray%20jets%20cinematic%20photorealistic?width=800&height=600&nologo=true" class="rounded-xl w-full object-cover" alt="Stellar Mass"></div>
                 </div>
-                
-                <div class="glass-card rounded-xl p-8 hover:border-white/30 transition-all group">
-                    <div class="w-16 h-16 rounded-full bg-white/5 flex items-center justify-center mb-6 mx-auto border border-white/10 group-hover:scale-110 transition-transform duration-500">
-                        <i data-lucide="help-circle" class="w-6 h-6 text-white" style="stroke-width: 1.5"></i>
+
+                <!-- 2. Supermassive -->
+                <div class="grid lg:grid-cols-2 gap-16 items-start">
+                    <div class="lg:order-2">
+                        <h3 class="text-3xl font-cinzel text-white mb-6">Supermassive Black Holes</h3>
+                        <p class="text-zinc-400 text-lg leading-relaxed mb-6 text-justify-academic">
+                            Monsters residing at the centers of nearly all large galaxies. Ranging from millions to billions of solar masses, their origin remains a mystery. They may have formed from the direct collapse of pristine gas clouds in the early universe, or from the rapid merger of smaller seeds.
+                        </p>
+                        <details class="deep-dive mb-8">
+                            <summary>DEEP DIVE: Quasars &amp; AGNs</summary>
+                            <div class="deep-dive-content">
+                                <p class="mb-4">
+                                    When these giants feed, they become Active Galactic Nuclei (AGNs). A Quasar is an AGN so bright it outshines its entire host galaxy. The energy comes from the accretion disk converting mass to energy with up to 40% efficiency (nuclear fusion is only 0.7%).
+                                </p>
+                            </div>
+                        </details>
+                        <div class="mb-8">
+                            <div class="flex justify-between text-xs font-mono text-zinc-500 mb-2">
+                                <span>MAX OBSERVED MASS (TON 618)</span>
+                                <span>66,000,000,000 M☉</span>
+                            </div>
+                            <div class="data-bar-container">
+                                <div class="data-bar-fill bg-purple-500" style="width: 100%"></div>
+                            </div>
+                        </div>
+                        <div class="key-figures-grid">
+                            <div class="glass-card p-4 rounded-lg text-center"><div class="text-xs text-zinc-500 uppercase mb-1">Example</div><div class="font-bold text-white text-sm">Sgr A*</div></div>
+                            <div class="glass-card p-4 rounded-lg text-center"><div class="text-xs text-zinc-500 uppercase mb-1">Role</div><div class="font-bold text-white text-sm">Anchor</div></div>
+                            <div class="glass-card p-4 rounded-lg text-center"><div class="text-xs text-zinc-500 uppercase mb-1">Engine</div><div class="font-bold text-white text-sm">Quasar</div></div>
+                            <div class="glass-card p-4 rounded-lg text-center"><div class="text-xs text-zinc-500 uppercase mb-1">Age</div><div class="font-bold text-white text-sm">Primordial</div></div>
+                        </div>
                     </div>
-                    <h4 class="text-xl font-medium text-center mb-2 font-cinzel">Intermediate</h4>
-                    <div class="text-center text-sm text-zinc-400 mb-4 font-mono">10² - 10⁵ M<sub>☉</sub></div>
-                    <p class="text-sm text-zinc-400 text-center font-light leading-relaxed">The "missing link". Elusive objects potentially formed from stellar mergers in clusters.</p>
-                </div>
-                
-                <div class="glass-card rounded-xl p-8 hover:border-white/30 transition-all group">
-                    <div class="w-16 h-16 rounded-full bg-white/5 flex items-center justify-center mb-6 mx-auto border border-white/10 group-hover:scale-110 transition-transform duration-500">
-                        <i data-lucide="orbit" class="w-6 h-6 text-white" style="stroke-width: 1.5"></i>
-                    </div>
-                    <h4 class="text-xl font-medium text-center mb-2 font-cinzel">Supermassive</h4>
-                    <div class="text-center text-sm text-zinc-400 mb-4 font-mono">10⁶ - 10¹⁰ M<sub>☉</sub></div>
-                    <p class="text-sm text-zinc-400 text-center font-light leading-relaxed">Galaxy anchors. M87* is 6.5 billion solar masses. They shape cosmic history.</p>
+                    <div class="lg:order-1 glass-card p-2 rounded-2xl border-white/10"><img src="https://image.pollinations.ai/prompt/supermassive%20black%20hole%20galactic%20center%20active%20nucleus%20jet%20cosmic%20scale%20cinematic?width=800&height=600&nologo=true" class="rounded-xl w-full object-cover" alt="Supermassive"></div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Module 5: Thermodynamics -->
-    <section id="thermodynamics" class="py-32 relative border-t border-white/5 overflow-hidden">
-        <div class="section-bg-container">
-            <img src="https://hoirqrkdgbmvpwutwuwj.supabase.co/storage/v1/object/public/assets/assets/2b8b3b39-e23c-43e6-be7b-500fa586c81f_1600w.jpg" 
-                 class="section-bg" alt="Thermodynamics Background">
-        </div>
-
-        <div class="max-w-7xl mx-auto px-6 relative z-10">
+    <!-- MODULE 5: THERMODYNAMICS -->
+    <section id="thermodynamics" class="py-32 relative border-t border-white/5 bg-zinc-950">
+        <div class="max-w-[1400px] mx-auto px-6 relative z-10">
              <div class="flex items-center gap-6 mb-20">
                 <span class="text-8xl font-cinzel text-white/5 font-bold absolute -left-6 -top-10 select-none">05</span>
                 <div class="relative">
                     <div class="text-xs text-zinc-500 uppercase tracking-[0.2em] mb-2 font-semibold">Module Five</div>
-                    <h2 class="text-4xl md:text-5xl font-semibold tracking-tight">Thermodynamics</h2>
+                    <h2 class="text-5xl md:text-6xl font-semibold tracking-tight">Thermodynamics</h2>
                 </div>
             </div>
-            
-            <div class="grid lg:grid-cols-2 gap-12 mb-16">
+
+            <div class="grid lg:grid-cols-2 gap-12">
                 <!-- Hawking Radiation -->
-                <div class="glass-card rounded-2xl p-10">
-                    <div class="flex items-center gap-4 mb-6">
-                        <div class="p-3 rounded-full bg-white/5 border border-white/10">
-                             <i data-lucide="waves" class="w-6 h-6 text-white" style="stroke-width: 1.5"></i>
-                        </div>
-                        <h3 class="text-2xl font-medium font-cinzel">Hawking Radiation</h3>
-                    </div>
-                    <p class="text-zinc-400 leading-relaxed mb-8 font-light">
-                        Stephen Hawking's 1974 breakthrough: black holes aren't perfectly black. Quantum fluctuations near the horizon create particle pairs, causing the black hole to slowly evaporate.
+                <div class="glass-card p-8 rounded-2xl relative overflow-hidden group">
+                    <div class="absolute inset-0 bg-blue-500/5 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                    <h3 class="text-2xl font-cinzel text-white mb-4 relative z-10">Hawking Radiation</h3>
+                    <p class="text-zinc-400 mb-6 leading-relaxed relative z-10">
+                        Classically, black holes are perfect absorbers. Quantum mechanically, they glow. Stephen Hawking showed that particle-antiparticle pairs popping into existence near the horizon can be separated—one falls in, one escapes. The escaping particle becomes radiation, stealing mass from the black hole.
                     </p>
-                    <div class="equation-box rounded-lg p-6 text-center border-t-2 border-white/20">
-                        <div class="text-xl text-white font-serif italic">T<sub>H</sub> = ℏc³/(8πGMk<sub>B</sub>)</div>
+                    <details class="deep-dive mb-6 relative z-10">
+                        <summary>DEEP DIVE: Evaporation Time</summary>
+                        <div class="deep-dive-content">
+                            <p>Evaporation time is proportional to M³. A solar mass black hole would take 10⁶⁷ years to evaporate. A microscopic black hole would flash out of existence instantly.</p>
+                            <div class="mt-4 font-mono text-xs text-center border p-2 rounded border-white/10">T ~ 1/M</div>
+                        </div>
+                    </details>
+                    <div class="grid grid-cols-2 gap-4 relative z-10">
+                         <div class="glass-card p-3 text-center"><div class="text-[10px] text-zinc-500">Year</div><div class="font-bold">1974</div></div>
+                         <div class="glass-card p-3 text-center"><div class="text-[10px] text-zinc-500">Temp</div><div class="font-bold">Nano-Kelvin</div></div>
                     </div>
                 </div>
-                
+
                 <!-- Entropy -->
-                <div class="glass-card rounded-2xl p-10">
-                    <div class="flex items-center gap-4 mb-6">
-                        <div class="p-3 rounded-full bg-white/5 border border-white/10">
-                             <i data-lucide="database" class="w-6 h-6 text-white" style="stroke-width: 1.5"></i>
-                        </div>
-                        <h3 class="text-2xl font-medium font-cinzel">Entropy</h3>
-                    </div>
-                    <p class="text-zinc-400 leading-relaxed mb-8 font-light">
-                        Jacob Bekenstein proposed that black hole entropy is proportional to horizon area—not volume. This suggests information is stored on the 2D surface.
+                <div class="glass-card p-8 rounded-2xl relative overflow-hidden group">
+                    <div class="absolute inset-0 bg-green-500/5 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                    <h3 class="text-2xl font-cinzel text-white mb-4 relative z-10">Bekenstein Entropy</h3>
+                    <p class="text-zinc-400 mb-6 leading-relaxed relative z-10">
+                        Entropy is a measure of hidden information. Bekenstein realized that if a black hole had no entropy, dropping a tea cup into it would violate the Second Law of Thermodynamics. He proposed the entropy is proportional to the surface area of the horizon.
                     </p>
-                    <div class="equation-box rounded-lg p-6 text-center border-t-2 border-white/20">
-                        <div class="text-xl text-white font-serif italic">S = k<sub>B</sub>c³A/(4Gℏ)</div>
+                    <details class="deep-dive mb-6 relative z-10">
+                        <summary>DEEP DIVE: The Holographic Principle</summary>
+                        <div class="deep-dive-content">
+                            <p>This realization led to the Holographic Principle: the maximum amount of information held in a volume of space is proportional to the surface area of its boundary, not its volume. The 3D universe might be a projection of 2D data.</p>
+                        </div>
+                    </details>
+                     <div class="grid grid-cols-2 gap-4 relative z-10">
+                         <div class="glass-card p-3 text-center"><div class="text-[10px] text-zinc-500">Symbol</div><div class="font-bold">S</div></div>
+                         <div class="glass-card p-3 text-center"><div class="text-[10px] text-zinc-500">Relation</div><div class="font-bold">Area (A)</div></div>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Module 6: Evidence -->
-    <section id="evidence" class="py-32 relative border-t border-white/5 overflow-hidden">
-        <div class="absolute inset-0 z-0 bg-black"></div> <!-- Stark black for contrast -->
-
-        <div class="max-w-7xl mx-auto px-6 relative z-10">
+    <!-- MODULE 6: OBSERVATIONAL EVIDENCE -->
+    <section id="evidence" class="py-32 relative border-t border-white/5 bg-black">
+         <div class="max-w-[1400px] mx-auto px-6 relative z-10">
              <div class="flex items-center gap-6 mb-20">
                 <span class="text-8xl font-cinzel text-white/5 font-bold absolute -left-6 -top-10 select-none">06</span>
                 <div class="relative">
                     <div class="text-xs text-zinc-500 uppercase tracking-[0.2em] mb-2 font-semibold">Module Six</div>
-                    <h2 class="text-4xl md:text-5xl font-semibold tracking-tight">Observational Evidence</h2>
+                    <h2 class="text-5xl md:text-6xl font-semibold tracking-tight">Hard Evidence</h2>
                 </div>
             </div>
-            
-            <div class="grid md:grid-cols-2 gap-8 mb-16">
-                <!-- EHT Image -->
-                <div class="glass-card rounded-2xl p-8 flex flex-col group">
-                    <div class="flex items-center justify-between mb-6">
-                        <h3 class="text-xl font-medium font-cinzel text-white">First Image: M87*</h3>
-                        <span class="text-xs px-2 py-1 rounded border border-white/30 text-white font-mono">2019</span>
+
+            <!-- EHT & LIGO Parallax -->
+            <div class="space-y-6">
+                <!-- EHT -->
+                <div class="relative min-h-[60vh] rounded-3xl overflow-hidden flex items-center group">
+                    <div class="absolute inset-0 z-0">
+                         <img src="https://image.pollinations.ai/prompt/event%20horizon%20telescope%20black%20hole%20image%20m87%20radio%20telescope%20array%20data%20processing%20cinematic?width=1920&height=1080&nologo=true" class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105" alt="EHT">
+                         <div class="absolute inset-0 bg-gradient-to-r from-black via-black/80 to-transparent"></div>
                     </div>
-                    <div class="aspect-square bg-black rounded-xl mb-6 flex items-center justify-center relative overflow-hidden border border-white/10 group-hover:border-white/30 transition-colors">
-                        <!-- CSS Generated M87 (Restored Orange/Fire Plasma) -->
-                        <div class="w-40 h-40 rounded-full bg-gradient-to-r from-orange-600 to-amber-500 blur-xl opacity-60 absolute animate-pulse" style="animation-duration: 4s"></div>
-                        <div class="w-32 h-32 rounded-full border-[12px] border-orange-500/40 relative blur-sm shadow-[0_0_30px_rgba(234,88,12,0.4)]"></div>
-                        <div class="w-32 h-32 rounded-full border-b-[16px] border-l-[4px] border-orange-400 relative bottom-3 left-1 rotate-45 blur-md"></div>
-                         <div class="absolute inset-0 bg-black rounded-full scale-50 z-10"></div>
+                    <div class="relative z-10 p-12 max-w-2xl">
+                        <div class="inline-block bg-orange-500 text-black font-bold px-3 py-1 text-xs mb-4">2019 / 2022</div>
+                        <h3 class="text-4xl font-cinzel text-white mb-4">The Event Horizon Telescope</h3>
+                        <p class="text-zinc-300 text-lg mb-6 leading-relaxed">
+                            Using Very Long Baseline Interferometry (VLBI), the EHT turned the Earth into a giant eye. It resolved the shadow of M87* (6.5 billion M☉) and Sgr A* (4 million M☉), proving the existence of the photon ring predicted by relativity.
+                        </p>
+                        <div class="grid grid-cols-2 gap-4 max-w-md">
+                            <div class="border border-white/20 p-4 rounded bg-black/50 backdrop-blur">
+                                <div class="text-xs text-zinc-500 uppercase">Resolution</div>
+                                <div class="text-white font-mono">20 micro-arcsec</div>
+                            </div>
+                            <div class="border border-white/20 p-4 rounded bg-black/50 backdrop-blur">
+                                <div class="text-xs text-zinc-500 uppercase">Data</div>
+                                <div class="text-white font-mono">5 Petabytes</div>
+                            </div>
+                        </div>
                     </div>
-                    <p class="text-sm text-zinc-400 leading-relaxed font-light">
-                        The Event Horizon Telescope combined eight radio telescopes worldwide to create an Earth-sized virtual dish, resolving the shadow of M87*.
-                    </p>
                 </div>
-                
+
                 <!-- LIGO -->
-                <div class="glass-card rounded-2xl p-8 flex flex-col group">
-                     <div class="flex items-center justify-between mb-6">
-                        <h3 class="text-xl font-medium font-cinzel text-white">Gravitational Waves</h3>
-                        <span class="text-xs px-2 py-1 rounded border border-white/30 text-white font-mono">2015</span>
+                <div class="relative min-h-[60vh] rounded-3xl overflow-hidden flex items-center justify-end text-right group">
+                     <div class="absolute inset-0 z-0">
+                         <img src="https://image.pollinations.ai/prompt/LIGO%20detector%20gravitational%20waves%20ripples%20in%20spacetime%20laser%20interferometer%20blue%20sci-fi?width=1920&height=1080&nologo=true" class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105" alt="LIGO">
+                         <div class="absolute inset-0 bg-gradient-to-l from-black via-black/80 to-transparent"></div>
                     </div>
-                    <div class="aspect-square bg-black rounded-xl mb-6 flex items-center justify-center overflow-hidden border border-white/10 group-hover:border-white/30 transition-colors">
-                        <svg viewBox="0 0 200 100" class="w-full h-auto px-4 opacity-70">
-                            <path d="M0,50 Q25,20 50,50 T100,50 T150,50 T200,50" stroke="url(#grad1)" fill="none" stroke-width="2">
-                                <animate attributeName="d" dur="2s" repeatCount="indefinite" values="M0,50 Q25,20 50,50 T100,50 T150,50 T200,50;
-                                            M0,50 Q25,80 50,50 T100,50 T150,50 T200,50;
-                                            M0,50 Q25,20 50,50 T100,50 T150,50 T200,50"></animate>
-                            </path>
-                            <defs>
-                                <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="0%">
-                                <stop offset="0%" style="stop-color:rgb(5,5,5);stop-opacity:1" />
-                                <stop offset="50%" style="stop-color:rgb(255,255,255);stop-opacity:1" />
-                                <stop offset="100%" style="stop-color:rgb(5,5,5);stop-opacity:1" />
-                                </linearGradient>
-                            </defs>
-                        </svg>
+                    <div class="relative z-10 p-12 max-w-2xl">
+                         <div class="inline-block bg-blue-500 text-black font-bold px-3 py-1 text-xs mb-4">GW150914</div>
+                        <h3 class="text-4xl font-cinzel text-white mb-4">LIGO &amp; Gravitational Waves</h3>
+                        <p class="text-zinc-300 text-lg mb-6 leading-relaxed">
+                            Ripples in the fabric of spacetime caused by the violent merger of black holes. Detected by measuring length changes smaller than a proton using 4km laser arms. It opened a new sense for humanity: we can now "hear" the universe.
+                        </p>
+                        <div class="flex justify-end gap-4">
+                             <div class="border border-white/20 p-4 rounded bg-black/50 backdrop-blur text-left">
+                                <div class="text-xs text-zinc-500 uppercase">Strain Sensitivity</div>
+                                <div class="text-white font-mono">10⁻²¹</div>
+                            </div>
+                        </div>
                     </div>
-                    <p class="text-sm text-zinc-400 leading-relaxed font-light">
-                        LIGO detected spacetime ripples from two merging black holes 1.3 billion light-years away, confirming Einstein's century-old prediction.
-                    </p>
+                </div>
+            </div>
+
+            <!-- Gallery of Simulations -->
+            <div class="mt-20">
+                <h3 class="text-2xl font-cinzel text-white mb-8">Simulation Gallery</h3>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 h-64">
+                    <div class="group relative overflow-hidden rounded-xl bg-zinc-900 cursor-pointer">
+                        <img src="https://image.pollinations.ai/prompt/black%20hole%20accretion%20disk%20simulation%20doppler%20beaming%20scientific%20visualization?width=400&height=400&nologo=true" class="w-full h-full object-cover opacity-60 group-hover:opacity-100 transition-opacity">
+                    </div>
+                    <div class="group relative overflow-hidden rounded-xl bg-zinc-900 cursor-pointer">
+                        <img src="https://image.pollinations.ai/prompt/binary%20black%20hole%20merger%20simulation%20gravitational%20waves%20grid%20warp?width=400&height=400&nologo=true" class="w-full h-full object-cover opacity-60 group-hover:opacity-100 transition-opacity">
+                    </div>
+                    <div class="group relative overflow-hidden rounded-xl bg-zinc-900 cursor-pointer">
+                        <img src="https://image.pollinations.ai/prompt/supermassive%20black%20hole%20jet%20launch%20magnetic%20field%20lines%20simulation?width=400&height=400&nologo=true" class="w-full h-full object-cover opacity-60 group-hover:opacity-100 transition-opacity">
+                    </div>
+                    <div class="group relative overflow-hidden rounded-xl bg-zinc-900 cursor-pointer">
+                        <img src="https://image.pollinations.ai/prompt/black%20hole%20photon%20ring%20ray%20tracing%20simulation%20high%20resolution?width=400&height=400&nologo=true" class="w-full h-full object-cover opacity-60 group-hover:opacity-100 transition-opacity">
+                    </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Module 7: Frontier -->
+    <!-- MODULE 7: FRONTIER -->
     <section id="frontier" class="py-32 relative border-t border-white/5 overflow-hidden">
-        <div class="section-bg-container">
-            <img src="https://hoirqrkdgbmvpwutwuwj.supabase.co/storage/v1/object/public/assets/assets/46ceb0ec-b3fa-4f16-8a70-bbd217ee77a9_1600w.jpg" 
-                 class="section-bg" alt="Frontier Background">
+        <div class="section-bg-container absolute inset-0">
+             <img src="https://image.pollinations.ai/prompt/quantum%20gravity%20string%20theory%20holographic%20universe%20matrix%20code%20abstract%20dark?width=1920&height=1080&nologo=true" class="w-full h-full object-cover opacity-20" alt="Frontier BG">
         </div>
 
-        <div class="max-w-7xl mx-auto px-6 relative z-10">
+        <div class="max-w-[1400px] mx-auto px-6 relative z-10">
              <div class="flex items-center gap-6 mb-20">
                 <span class="text-8xl font-cinzel text-white/5 font-bold absolute -left-6 -top-10 select-none">07</span>
                 <div class="relative">
                     <div class="text-xs text-zinc-500 uppercase tracking-[0.2em] mb-2 font-semibold">Module Seven</div>
-                    <h2 class="text-4xl md:text-5xl font-semibold tracking-tight">The Frontier</h2>
+                    <h2 class="text-5xl md:text-6xl font-semibold tracking-tight">The Frontier</h2>
                 </div>
             </div>
-            
-            <div class="glass-card rounded-2xl p-8 md:p-12 mb-12 border-l-2 border-l-white/60">
-                <div class="flex items-center gap-4 mb-6">
-                    <i data-lucide="alert-triangle" class="w-8 h-8 text-white" style="stroke-width: 1.5"></i>
-                    <h3 class="text-2xl font-medium font-cinzel text-white">The Information Paradox</h3>
+
+            <div class="grid lg:grid-cols-2 gap-16">
+                <!-- Info Paradox -->
+                <div class="glass-card p-10 rounded-3xl border border-red-500/20 shadow-[0_0_50px_-20px_rgba(255,0,0,0.1)]">
+                    <h3 class="text-3xl font-cinzel text-white mb-6">The Information Paradox</h3>
+                    <p class="text-zinc-400 mb-6 leading-relaxed text-justify-academic">
+                        Quantum Mechanics states information is eternal (Unitary). Relativity states black holes evaporate into random thermal radiation, destroying the information of what fell in. These two pillars of physics contradict each other here.
+                    </p>
+                    <div class="space-y-4">
+                        <div class="bg-black/40 p-4 rounded border-l-2 border-red-500">
+                            <h4 class="text-white font-bold text-sm">Solution A: Information Loss</h4>
+                            <p class="text-xs text-zinc-500">Quantum mechanics is wrong. Information is destroyed. (Hawking's original bet)</p>
+                        </div>
+                        <div class="bg-black/40 p-4 rounded border-l-2 border-green-500">
+                            <h4 class="text-white font-bold text-sm">Solution B: Remnants</h4>
+                            <p class="text-xs text-zinc-500">Evaporation stops at the Planck scale, leaving a dense nugget of info.</p>
+                        </div>
+                         <div class="bg-black/40 p-4 rounded border-l-2 border-blue-500">
+                            <h4 class="text-white font-bold text-sm">Solution C: Holography/Islands</h4>
+                            <p class="text-xs text-zinc-500">Information is encoded in the radiation via subtle quantum entanglements.</p>
+                        </div>
+                    </div>
                 </div>
-                <p class="text-zinc-300 leading-relaxed mb-8 max-w-3xl font-light">
-                    If black holes evaporate, what happens to the information of the matter that fell in? Quantum mechanics says information cannot be destroyed. General Relativity suggests it is. This is the biggest open problem in modern physics.
-                </p>
-                <div class="grid md:grid-cols-3 gap-6">
-                    <div class="glass-card rounded-lg p-6 bg-black/40">
-                        <h4 class="font-medium text-white mb-2 font-cinzel">Firewall</h4>
-                        <p class="text-xs text-zinc-500">A wall of high energy particles at the horizon burns anything that tries to enter.</p>
-                    </div>
-                    <div class="glass-card rounded-lg p-6 bg-black/40">
-                        <h4 class="font-medium text-white mb-2 font-cinzel">Wormholes</h4>
-                        <p class="text-xs text-zinc-500">ER = EPR. Entangled particles are connected by microscopic wormholes.</p>
-                    </div>
-                    <div class="glass-card rounded-lg p-6 bg-black/40">
-                        <h4 class="font-medium text-white mb-2 font-cinzel">Islands</h4>
-                        <p class="text-xs text-zinc-500">New calculations of entanglement entropy suggest information is recovered.</p>
-                    </div>
+
+                <!-- Firewalls -->
+                <div>
+                     <h3 class="text-3xl font-cinzel text-white mb-6">Firewalls &amp; Wormholes</h3>
+                     <p class="text-zinc-400 mb-8 leading-relaxed text-justify-academic">
+                        To save quantum mechanics, some physicists propose a "Firewall" of high-energy particles at the horizon that incinerates anything attempting to enter. Others suggest "ER=EPR", implying that quantum entanglement (EPR) is connected by microscopic wormholes (ER).
+                     </p>
+                     <div class="grid grid-cols-2 gap-4">
+                         <div class="glass-card p-6 rounded-xl text-center flex flex-col items-center justify-center aspect-square">
+                             <i data-lucide="flame" class="w-8 h-8 text-orange-500 mb-4"></i>
+                             <span class="font-cinzel text-lg">Firewall</span>
+                         </div>
+                         <div class="glass-card p-6 rounded-xl text-center flex flex-col items-center justify-center aspect-square">
+                             <i data-lucide="link" class="w-8 h-8 text-blue-500 mb-4"></i>
+                             <span class="font-cinzel text-lg">ER = EPR</span>
+                         </div>
+                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Footer -->
-    <footer class="py-16 border-t border-white/5 relative z-10 bg-black">
-        <div class="max-w-7xl mx-auto px-6">
-            <div class="flex flex-col md:flex-row items-center justify-between gap-8">
-                <div class="flex items-center gap-3">
-                    <div class="w-8 h-8 rounded-full bg-gradient-to-br from-white to-zinc-500 flex items-center justify-center">
-                        <div class="w-3 h-3 bg-black rounded-full"></div>
-                    </div>
-                    <span class="text-lg font-cinzel font-semibold tracking-tight text-white">Zero to Infinity</span>
-                </div>
-                <div class="text-sm text-zinc-600 text-center font-light">
-                    Designed for the curious. The universe is waiting.
-                </div>
-                <div class="flex items-center gap-6 text-zinc-500">
-                    <a href="#" class="hover:text-white transition-colors"><i data-lucide="github" class="w-5 h-5"></i></a>
-                    <a href="#" class="hover:text-white transition-colors"><i data-lucide="twitter" class="w-5 h-5"></i></a>
-                </div>
+    <!-- FOOTER -->
+    <footer class="py-24 border-t border-white/5 bg-black relative z-10">
+        <div class="max-w-[1400px] mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-8">
+            <div class="text-left">
+                <h4 class="text-2xl font-cinzel text-white mb-2">ZERO TO INFINITY</h4>
+                <p class="text-zinc-600 text-sm">The Complete Guide to Black Holes</p>
+            </div>
+            <div class="flex gap-6 text-zinc-500">
+                <a href="#" class="hover:text-white transition-colors">GitHub</a>
+                <a href="#" class="hover:text-white transition-colors">Twitter</a>
+                <a href="#" class="hover:text-white transition-colors">Research</a>
             </div>
         </div>
     </footer>
 
-    <!-- Logic Scripts -->
+    <!-- SCRIPTS -->
     <script>
-        // Initialize Lucide icons
         lucide.createIcons();
 
-        // --- 2. SPOTLIGHT & CURSOR LOGIC ---
-        const glassCards = document.querySelectorAll('.glass-card');
-        
-        glassCards.forEach(card => {
-            let rafId = null;
-            card.addEventListener('mousemove', (e) => {
-                if (rafId) return;
-                
-                rafId = requestAnimationFrame(() => {
-                    const rect = card.getBoundingClientRect();
-                    const x = e.clientX - rect.left;
-                    const y = e.clientY - rect.top;
-
-                    card.style.setProperty('--mouse-x', `${x}px`);
-                    card.style.setProperty('--mouse-y', `${y}px`);
-                    rafId = null;
-                });
+        // 1. HORIZONTAL SCROLL INTERACTION
+        const scrollContainer = document.querySelector('.horizontal-timeline-container');
+        if(scrollContainer) {
+            scrollContainer.addEventListener('wheel', (evt) => {
+                evt.preventDefault();
+                scrollContainer.scrollLeft += evt.deltaY;
             });
-        });
+        }
 
-        // --- 3. ANIMATIONS (GSAP) ---
-        
-        // Register ScrollTrigger
+        // 2. GSAP ANIMATIONS
         gsap.registerPlugin(ScrollTrigger);
 
-        // A. Image Reveal (Slow Zoom + Parallax)
-        gsap.utils.toArray('.section-bg').forEach((bg) => {
-            // Set initial state
-            gsap.set(bg, { scale: 1.15 });
-
-            // Create tween
-            gsap.to(bg, {
-                yPercent: 30, // Deeper parallax movement
-                scale: 1.0,   // Slow zoom out reveal
-                ease: "none",
-                force3D: true,
-                scrollTrigger: {
-                    trigger: bg.parentElement, 
-                    start: "top bottom",
-                    end: "bottom top",
-                    scrub: 0.5 
-                }
-            });
-        });
-
-        // B. Text Reveal Animation (Clip Path)
-        const revealElements = document.querySelectorAll('.reveal-text');
-        
-        // Initial animation timeline
-        const tl = gsap.timeline({ delay: 0.5 });
-        
-        tl.to(revealElements, {
-            y: 0,
-            clipPath: 'polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)',
-            duration: 1.2,
-            stagger: 0.15,
-            ease: "power4.out",
-            force3D: true
-        })
-        .to('#hero-buttons', {
-            opacity: 1,
-            y: 0,
-            duration: 1,
-            ease: "power2.out",
-            force3D: true
-        }, "-=0.5");
-
-        // C. Card Fade-ins
-        gsap.utils.toArray('.glass-card').forEach((card, i) => {
+        // Cards Fade Up
+        gsap.utils.toArray('.glass-card').forEach(card => {
             gsap.from(card, {
-                scrollTrigger: {
-                    trigger: card,
-                    start: 'top 90%',
-                    toggleActions: 'play none none reverse'
-                },
-                y: 50,
-                opacity: 0,
-                duration: 1.0,
-                ease: "power3.out",
-                force3D: true
+                scrollTrigger: { trigger: card, start: 'top 95%' },
+                y: 30, opacity: 0, duration: 0.8, ease: 'power3.out'
             });
         });
 
-        // --- 4. THREE.JS BLACK HOLE (RESTORED FIERY COLORS) ---
+        // Headers Reveal
+        gsap.utils.toArray('h2').forEach(header => {
+            gsap.from(header, {
+                scrollTrigger: { trigger: header, start: 'top 85%' },
+                x: -50, opacity: 0, duration: 1, ease: 'power2.out'
+            });
+        });
+
+        // Data Bars Fill
+        gsap.utils.toArray('.data-bar-fill').forEach(bar => {
+             gsap.from(bar, {
+                scrollTrigger: { trigger: bar, start: 'top 90%' },
+                width: 0, duration: 1.5, ease: 'power4.out'
+            });
+        });
+
+        // 3. THREE.JS BLACK HOLE (Dashboard Integration)
         const canvas = document.getElementById('blackhole-canvas');
         const container = document.getElementById('blackhole-wrapper');
         
         if (canvas && container) {
             const scene = new THREE.Scene();
+            // Match container aspect ratio
             const camera = new THREE.PerspectiveCamera(60, container.clientWidth / container.clientHeight, 0.1, 1000);
             const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
-            renderer.setSize(container.clientWidth, container.clientHeight);
-            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
             
-            // Event Horizon (black sphere)
-            const eventHorizonGeom = new THREE.SphereGeometry(1, 64, 64);
-            const eventHorizonMat = new THREE.MeshBasicMaterial({ color: 0x000000 });
-            const eventHorizon = new THREE.Mesh(eventHorizonGeom, eventHorizonMat);
+            const updateSize = () => {
+                const w = container.clientWidth;
+                const h = container.clientHeight;
+                renderer.setSize(w, h);
+                camera.aspect = w / h;
+                camera.updateProjectionMatrix();
+            };
+            updateSize();
+            window.addEventListener('resize', updateSize);
+            
+            // Black Hole Mesh Construction
+            const eventHorizon = new THREE.Mesh(
+                new THREE.SphereGeometry(1, 64, 64),
+                new THREE.MeshBasicMaterial({ color: 0x000000 })
+            );
             scene.add(eventHorizon);
             
-            // Photon sphere (wireframe) - Gold
-            const photonGeom = new THREE.SphereGeometry(1.5, 32, 32);
-            const photonMat = new THREE.MeshBasicMaterial({ 
-                color: 0xffcc00, // Gold
-                wireframe: true, 
-                transparent: true, 
-                opacity: 0.1 
-            });
-            const photonSphere = new THREE.Mesh(photonGeom, photonMat);
-            scene.add(photonSphere);
-            
-            // Accretion disk - Orange
-            const diskGeom = new THREE.TorusGeometry(3, 0.8, 2, 100);
-            const diskMat = new THREE.MeshBasicMaterial({ 
-                color: 0xff6b35, // Orange
-                transparent: true, 
-                opacity: 0.5,
-                side: THREE.DoubleSide
-            });
-            const disk = new THREE.Mesh(diskGeom, diskMat);
-            disk.rotation.x = Math.PI / 2.5;
-            scene.add(disk);
-            
-            // Inner disk glow - Amber
-            const innerDiskGeom = new THREE.TorusGeometry(2, 0.4, 2, 100);
-            const innerDiskMat = new THREE.MeshBasicMaterial({ 
-                color: 0xffa500, // Amber
-                transparent: true, 
-                opacity: 0.7,
-                side: THREE.DoubleSide
-            });
-            const innerDisk = new THREE.Mesh(innerDiskGeom, innerDiskMat);
-            innerDisk.rotation.x = Math.PI / 2.5;
-            scene.add(innerDisk);
-            
-            // Particles - Light Orange
-            const particleCount = 500;
-            const particleGeom = new THREE.BufferGeometry();
-            const positions = new Float32Array(particleCount * 3);
-            
-            for (let i = 0; i < particleCount; i++) {
-                const angle = Math.random() * Math.PI * 2;
-                const radius = 2 + Math.random() * 3;
-                positions[i * 3] = Math.cos(angle) * radius;
-                positions[i * 3 + 1] = (Math.random() - 0.5) * 0.5;
-                positions[i * 3 + 2] = Math.sin(angle) * radius;
-            }
-            
-            particleGeom.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-            const particleMat = new THREE.PointsMaterial({ 
-                color: 0xffaa55, // Light Orange
-                size: 0.03,
-                transparent: true,
-                opacity: 0.6
-            });
-            const particles = new THREE.Points(particleGeom, particleMat);
-            particles.rotation.x = Math.PI / 2.5;
-            scene.add(particles);
-            
-            camera.position.z = 8;
-            camera.position.y = 2;
-            camera.lookAt(0, 0, 0);
-            
-            // Mouse interaction
-            let isDragging = false;
-            let previousMousePosition = { x: 0, y: 0 };
-            let rotationY = 0;
-            let rotationX = 0;
-            
-            canvas.addEventListener('mousedown', (e) => {
-                isDragging = true;
-                previousMousePosition = { x: e.clientX, y: e.clientY };
-            });
-            
-            canvas.addEventListener('mousemove', (e) => {
-                if (isDragging) {
-                    const deltaX = e.clientX - previousMousePosition.x;
-                    const deltaY = e.clientY - previousMousePosition.y;
-                    rotationY += deltaX * 0.005;
-                    rotationX += deltaY * 0.005;
-                    rotationX = Math.max(-Math.PI / 3, Math.min(Math.PI / 3, rotationX));
-                    previousMousePosition = { x: e.clientX, y: e.clientY };
-                }
-            });
-            
-            canvas.addEventListener('mouseup', () => isDragging = false);
-            canvas.addEventListener('mouseleave', () => isDragging = false);
-            
-            // Animation loop
-            function animate() {
-                requestAnimationFrame(animate);
-                
-                if (!isDragging) {
-                    rotationY += 0.002;
-                }
-                
-                scene.rotation.y = rotationY;
-                scene.rotation.x = rotationX;
-                
-                particles.rotation.z += 0.001;
-                disk.rotation.z += 0.0005;
-                innerDisk.rotation.z += 0.001;
-                
-                renderer.render(scene, camera);
-            }
-            
-            animate();
-            
-            // Resize handler
-            window.addEventListener('resize', () => {
-                camera.aspect = container.clientWidth / container.clientHeight;
-                camera.updateProjectionMatrix();
-                renderer.setSize(container.clientWidth, container.clientHeight);
-            });
-        }
-    </script>
-    
-    <!-- Unicorn Studio Embed -->
-    <script src="https://cdn.unicorn.studio/v1.3.2/unicornStudio.umd.js"></script>
-    <script>
-        UnicornStudio.init().then(() => {
-            console.log('Unicorn Studio initialized');
-        }).catch((err) => {
-            console.log('Unicorn Studio initialization skipped');
-        });
-    </script>
+            // Photon Ring (Gold)
+            const photonRing = new THREE.Mesh(
+                new THREE.TorusGeometry(1.5, 0.02, 16, 100),
+                new THREE.MeshBasicMaterial({ color: 0xffcc00, transparent: true, opacity: 0.8 })
+            );
+            photonRing.rotation.x = Math.PI / 2;
+            scene.add(photonRing);
 
+            // Accretion Disk (Orange/Red Gradient via particles for performance/look)
+            const diskParticles = new THREE.BufferGeometry();
+            const diskCount = 2000;
+            const posArray = new Float32Array(diskCount * 3);
+            const colorArray = new Float32Array(diskCount * 3);
+            
+            const colorInside = new THREE.Color(0xffaa00);
+            const colorOutside = new THREE.Color(0xff0000);
+
+            for(let i=0; i<diskCount; i++) {
+                const angle = Math.random() * Math.PI * 2;
+                const radius = 2.0 + Math.random() * 3.5; // 2.0 to 5.5
+
+                posArray[i*3] = Math.cos(angle) * radius; // x
+                posArray[i*3+1] = (Math.random() - 0.5) * 0.1; // y (flat)
+                posArray[i*3+2] = Math.sin(angle) * radius; // z
+
+                // Color gradient based on radius
+                const t = (radius - 2.0) / 3.5;
+                const finalColor = colorInside.clone().lerp(colorOutside, t);
+                colorArray[i*3] = finalColor.r;
+                colorArray[i*3+1] = finalColor.g;
+                colorArray[i*3+2] = finalColor.b;
+            }
+            
+            diskParticles.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
+            diskParticles.setAttribute('color', new THREE.BufferAttribute(colorArray, 3));
+            
+            const diskMaterial = new THREE.PointsMaterial({
+                size: 0.05,
+                vertexColors: true,
+                transparent: true,
+                opacity: 0.8,
+                blending: THREE.AdditiveBlending
+            });
+            
+            const accretionDisk = new THREE.Points(diskParticles, diskMaterial);
+            // Tilt the disk
+            accretionDisk.rotation.x = 0.2;
+            accretionDisk.rotation.z = 0.1;
+            scene.add(accretionDisk);
+
+            camera.position.z = 6;
+            camera.position.y = 1;
+            camera.lookAt(0,0,0);
+
+            // Animation
+            const animate = () => {
+                requestAnimationFrame(animate);
+                accretionDisk.rotation.y -= 0.005; // Spin disk
+                photonRing.lookAt(camera.position); // Billboard effect for ring
+                renderer.render(scene, camera);
+            };
+            animate();
+        }
+
+        // 4. MOUSE SPOTLIGHT LOGIC
+        document.querySelectorAll('.glass-card').forEach(card => {
+            card.addEventListener('mousemove', e => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                card.style.setProperty('--mouse-x', `${x}px`);
+                card.style.setProperty('--mouse-y', `${y}px`);
+            });
+        });
+
+    </script>
 </body>
 </html>
