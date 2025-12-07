@@ -163,8 +163,281 @@ part6 = """
     <!-- SCRIPTS -->
     <script>
         lucide.createIcons();
+        gsap.registerPlugin(ScrollTrigger);
 
-        // 1. HORIZONTAL SCROLL INTERACTION
+        // ==========================================
+        // 0. UTILS: SCRAMBLE TEXT & MAGNETIC
+        // ==========================================
+
+        class ScrambleText {
+            constructor(element, chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%&') {
+                this.element = element;
+                this.originalText = element.innerText;
+                this.chars = chars;
+                this.frameId = null;
+                this.update = this.update.bind(this);
+            }
+
+            start(duration = 1000) {
+                const startTime = Date.now();
+                const length = this.originalText.length;
+
+                const animate = () => {
+                    const elapsed = Date.now() - startTime;
+                    const progress = Math.min(elapsed / duration, 1);
+
+                    let result = '';
+                    const revealIndex = Math.floor(progress * length);
+
+                    for (let i = 0; i < length; i++) {
+                        if (i < revealIndex) {
+                            result += this.originalText[i];
+                        } else if (this.originalText[i] === ' ') {
+                            result += ' ';
+                        } else {
+                            result += this.chars[Math.floor(Math.random() * this.chars.length)];
+                        }
+                    }
+
+                    this.element.innerText = result;
+
+                    if (progress < 1) {
+                        this.frameId = requestAnimationFrame(animate);
+                    } else {
+                        this.element.innerText = this.originalText; // Ensure final state
+                    }
+                };
+
+                if (this.frameId) cancelAnimationFrame(this.frameId);
+                animate();
+            }
+        }
+
+        // Magnetic Button Implementation
+        class MagneticObject {
+            constructor(el, strength = 20) {
+                this.el = el;
+                this.strength = strength;
+                this.rect = this.el.getBoundingClientRect();
+                this.isHovering = false;
+
+                // Update rect on resize
+                window.addEventListener('resize', () => this.rect = this.el.getBoundingClientRect());
+
+                document.addEventListener('mousemove', (e) => {
+                    const x = e.clientX;
+                    const y = e.clientY;
+
+                    // Check distance
+                    const centerX = this.rect.left + this.rect.width / 2;
+                    const centerY = this.rect.top + this.rect.height / 2;
+                    const dist = Math.hypot(x - centerX, y - centerY);
+                    const range = 100; // Activation range
+
+                    if (dist < range) {
+                        const magnetX = (x - centerX) / range * this.strength;
+                        const magnetY = (y - centerY) / range * this.strength;
+
+                        gsap.to(this.el, { x: magnetX, y: magnetY, duration: 0.5, ease: 'power2.out' });
+                    } else {
+                        gsap.to(this.el, { x: 0, y: 0, duration: 0.5, ease: 'elastic.out(1, 0.3)' });
+                    }
+                });
+            }
+        }
+
+        // 3D Tilt for Glass Cards
+        document.querySelectorAll('.glass-card').forEach(card => {
+            card.addEventListener('mousemove', e => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+
+                // Spotlight
+                card.style.setProperty('--mouse-x', `${x}px`);
+                card.style.setProperty('--mouse-y', `${y}px`);
+
+                // Tilt
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+                const tiltX = (y - centerY) / 20; // Rotate X based on Y
+                const tiltY = (centerX - x) / 20; // Rotate Y based on X
+
+                gsap.to(card, {
+                    transform: `perspective(1000px) rotateX(${tiltX}deg) rotateY(${tiltY}deg) scale3d(1.02, 1.02, 1.02)`,
+                    duration: 0.4,
+                    ease: 'power2.out'
+                });
+            });
+
+            card.addEventListener('mouseleave', () => {
+                gsap.to(card, {
+                    transform: `perspective(1000px) rotateX(0) rotateY(0) scale3d(1, 1, 1)`,
+                    duration: 0.7,
+                    ease: 'elastic.out(1, 0.8)'
+                });
+            });
+        });
+
+        // ==========================================
+        // 1. HERO BOOT SEQUENCE (FIX)
+        // ==========================================
+        window.addEventListener('load', () => {
+            // HUD Decoding Sound Effect (Visual only for now)
+
+            // 1. Reveal "System Online" badge
+            const systemOnline = document.querySelector('.reveal-container .text-mono'); // approx selector
+            // Actually, let's use the .reveal-text classes
+
+            const revealElements = document.querySelectorAll('.reveal-text');
+
+            // Staggered Glitch Reveal
+            revealElements.forEach((el, index) => {
+                setTimeout(() => {
+                    el.classList.add('revealed');
+                    el.classList.add('glitch-text');
+
+                    // Set data-text for glitch CSS
+                    el.setAttribute('data-text', el.innerText);
+
+                    // Scramble text content if it's the title
+                    if (el.innerText.includes('ZERO') || el.innerText.includes('INFINITY') || el.innerText.includes('TO')) {
+                         new ScrambleText(el).start(1500);
+                    }
+
+                    // Remove glitch effect after settling
+                    setTimeout(() => {
+                        el.classList.remove('glitch-text');
+                    }, 2000);
+
+                }, 500 + (index * 400));
+            });
+
+            // Reveal Buttons
+            setTimeout(() => {
+                const btn = document.getElementById('hero-buttons');
+                if(btn) {
+                    btn.style.transition = 'opacity 2s ease';
+                    btn.style.opacity = '1';
+                }
+            }, 3000);
+        });
+
+        // ==========================================
+        // 2. STARFIELD "WARP" INTERACTIVITY
+        // ==========================================
+        const starContainer = document.getElementById('starField');
+        if (starContainer) {
+            const scene = new THREE.Scene();
+            const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+            const renderer = new THREE.WebGLRenderer({ alpha: true });
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            starContainer.appendChild(renderer.domElement);
+
+            // Stars
+            const starsGeometry = new THREE.BufferGeometry();
+            const starsCount = 3000;
+            const posArray = new Float32Array(starsCount * 3);
+            const originalZ = new Float32Array(starsCount); // Store original Z to reset
+
+            for(let i = 0; i < starsCount * 3; i+=3) {
+                posArray[i] = (Math.random() - 0.5) * 100; // x
+                posArray[i+1] = (Math.random() - 0.5) * 100; // y
+                posArray[i+2] = (Math.random() - 0.5) * 100; // z
+                originalZ[i/3] = posArray[i+2];
+            }
+
+            starsGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
+
+            const starMaterial = new THREE.PointsMaterial({
+                size: 0.15,
+                color: 0xffffff,
+                transparent: true,
+                opacity: 0.8
+            });
+
+            const starMesh = new THREE.Points(starsGeometry, starMaterial);
+            scene.add(starMesh);
+            camera.position.z = 20;
+
+            // Mouse Velocity Tracking
+            let mouseX = 0, mouseY = 0;
+            let targetVelocity = 0;
+            let currentVelocity = 0;
+
+            document.addEventListener('mousemove', (e) => {
+                // Calculate rough velocity
+                const newX = e.clientX;
+                const newY = e.clientY;
+                const dx = newX - mouseX;
+                const dy = newY - mouseY;
+                const speed = Math.sqrt(dx*dx + dy*dy);
+
+                targetVelocity = Math.min(speed * 0.05, 5); // Cap warp speed
+
+                mouseX = newX;
+                mouseY = newY;
+
+                // Parallax
+                gsap.to(scene.rotation, {
+                    x: -(mouseY / window.innerHeight - 0.5) * 0.5,
+                    y: -(mouseX / window.innerWidth - 0.5) * 0.5,
+                    duration: 2
+                });
+            });
+
+            const animate = () => {
+                requestAnimationFrame(animate);
+
+                // Decay velocity
+                targetVelocity *= 0.95;
+                currentVelocity += (targetVelocity - currentVelocity) * 0.1;
+
+                // Base rotation
+                scene.rotation.z += 0.0005;
+
+                // Warp Effect: Stretch stars based on velocity
+                const positions = starsGeometry.attributes.position.array;
+
+                for(let i = 0; i < starsCount; i++) {
+                    const i3 = i * 3;
+                    // Move stars towards camera (warp)
+                    positions[i3 + 2] += (0.05 + currentVelocity * 0.5);
+
+                    // Reset if too close
+                    if (positions[i3 + 2] > 30) {
+                        positions[i3 + 2] = -50;
+                        positions[i3] = (Math.random() - 0.5) * 100; // Reshuffle XY
+                        positions[i3+1] = (Math.random() - 0.5) * 100;
+                    }
+                }
+                starsGeometry.attributes.position.needsUpdate = true;
+
+                // Stretch lines if fast
+                if (currentVelocity > 0.5) {
+                    starMaterial.size = 0.15 + currentVelocity * 0.2;
+                } else {
+                    starMaterial.size = 0.15;
+                }
+
+                renderer.render(scene, camera);
+            };
+
+            window.addEventListener('resize', () => {
+                camera.aspect = window.innerWidth / window.innerHeight;
+                camera.updateProjectionMatrix();
+                renderer.setSize(window.innerWidth, window.innerHeight);
+            });
+
+            animate();
+        }
+
+
+        // ==========================================
+        // 3. GSAP SCROLL & DATA INTERACTIVITY
+        // ==========================================
+
+        // Horizontal Scroll
         const scrollContainer = document.querySelector('.horizontal-timeline-container');
         if(scrollContainer) {
             scrollContainer.addEventListener('wheel', (evt) => {
@@ -173,34 +446,38 @@ part6 = """
             });
         }
 
-        // 2. GSAP ANIMATIONS
-        gsap.registerPlugin(ScrollTrigger);
-
-        // Cards Fade Up
-        gsap.utils.toArray('.glass-card').forEach(card => {
-            gsap.from(card, {
-                scrollTrigger: { trigger: card, start: 'top 95%' },
-                y: 30, opacity: 0, duration: 0.8, ease: 'power3.out'
-            });
-        });
-
-        // Headers Reveal
+        // Heavy "Cinematic" Parallax on Headers
         gsap.utils.toArray('h2').forEach(header => {
             gsap.from(header, {
-                scrollTrigger: { trigger: header, start: 'top 85%' },
-                x: -50, opacity: 0, duration: 1, ease: 'power2.out'
+                scrollTrigger: {
+                    trigger: header,
+                    start: 'top 100%',
+                    scrub: 1.5 // Heavy scrubbing
+                },
+                y: 100,
+                opacity: 0,
+                ease: 'power2.out'
             });
         });
 
-        // Data Bars Fill
-        gsap.utils.toArray('.data-bar-fill').forEach(bar => {
-             gsap.from(bar, {
-                scrollTrigger: { trigger: bar, start: 'top 90%' },
-                width: 0, duration: 1.5, ease: 'power4.out'
-            });
+        // Matrix Scramble for Dashboard Data
+        ScrollTrigger.batch('.font-mono, .glass-card h4', {
+            onEnter: (elements) => {
+                elements.forEach(el => {
+                    new ScrambleText(el).start(2000);
+                });
+            }
         });
 
-        // 3. THREE.JS BLACK HOLE (Dashboard Integration)
+        // Initialize Magnetic Buttons
+        document.querySelectorAll('a.group, button, nav a').forEach(el => {
+            new MagneticObject(el, 30); // Strength 30
+        });
+
+
+        // ==========================================
+        // 4. BLACK HOLE VISUALIZER (Existing)
+        // ==========================================
         const canvas = document.getElementById('blackhole-canvas');
         const container = document.getElementById('blackhole-wrapper');
 
@@ -290,18 +567,6 @@ part6 = """
             };
             animate();
         }
-
-        // 4. MOUSE SPOTLIGHT LOGIC
-        document.querySelectorAll('.glass-card').forEach(card => {
-            card.addEventListener('mousemove', e => {
-                const rect = card.getBoundingClientRect();
-                const x = e.clientX - rect.left;
-                const y = e.clientY - rect.top;
-                card.style.setProperty('--mouse-x', `${x}px`);
-                card.style.setProperty('--mouse-y', `${y}px`);
-            });
-        });
-
     </script>
 </body>
 </html>

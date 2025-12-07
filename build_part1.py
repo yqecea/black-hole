@@ -81,16 +81,45 @@ part1 = """<!DOCTYPE html>
         ::-webkit-scrollbar-thumb { background: #333; border-radius: 3px; }
         ::-webkit-scrollbar-thumb:hover { background: #555; }
 
-        /* Star Field */
+        /* Star Field (Container for Three.js) */
         .star-field {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             pointer-events: none; z-index: 0;
         }
-        .star {
-            position: absolute; background: white; border-radius: 50%;
-            animation: twinkle 3s ease-in-out infinite;
+
+        /* Glitch / Decoding Effect */
+        .glitch-text {
+            position: relative;
         }
-        @keyframes twinkle { 0%, 100% { opacity: 0.3; } 50% { opacity: 1; } }
+        .glitch-text::before, .glitch-text::after {
+            content: attr(data-text);
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: #050505;
+        }
+        .glitch-text::before {
+            left: 2px; text-shadow: -1px 0 #ff00c1; clip: rect(44px, 450px, 56px, 0);
+            animation: glitch-anim-1 5s infinite linear alternate-reverse;
+        }
+        .glitch-text::after {
+            left: -2px; text-shadow: -1px 0 #00fff9; clip: rect(44px, 450px, 56px, 0);
+            animation: glitch-anim-2 5s infinite linear alternate-reverse;
+        }
+        @keyframes glitch-anim-1 {
+            0% { clip: rect(30px, 9999px, 10px, 0); }
+            5% { clip: rect(70px, 9999px, 90px, 0); }
+            10% { clip: rect(10px, 9999px, 30px, 0); }
+            15% { clip: rect(80px, 9999px, 20px, 0); }
+            20% { clip: rect(40px, 9999px, 60px, 0); }
+            100% { clip: rect(60px, 9999px, 5px, 0); }
+        }
+        @keyframes glitch-anim-2 {
+            0% { clip: rect(20px, 9999px, 80px, 0); }
+            5% { clip: rect(90px, 9999px, 10px, 0); }
+            10% { clip: rect(50px, 9999px, 20px, 0); }
+            15% { clip: rect(10px, 9999px, 90px, 0); }
+            20% { clip: rect(60px, 9999px, 40px, 0); }
+            100% { clip: rect(30px, 9999px, 70px, 0); }
+        }
 
         /* Typography Utilities */
         .text-silver-gradient {
@@ -221,7 +250,27 @@ part1 = """<!DOCTYPE html>
         #blackhole-canvas { width: 100%; height: 100%; }
 
         /* Animation Classes */
-        .reveal-text { clip-path: polygon(0 100%, 100% 100%, 100% 100%, 0% 100%); transform: translateY(100%); }
+        .reveal-text {
+            clip-path: polygon(0 100%, 100% 100%, 100% 100%, 0% 100%);
+            transform: translateY(100%);
+            opacity: 0;
+            transition: all 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .reveal-text.revealed {
+            clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%);
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        /* Magnetic Button */
+        .magnetic-wrap {
+            display: inline-block;
+            position: relative;
+        }
+        .magnetic-area {
+            position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
+            border-radius: 50%; z-index: 10;
+        }
 
         /* Custom Grids */
         .key-figures-grid {
